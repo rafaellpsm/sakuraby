@@ -25,6 +25,10 @@
   scrollbar-color: #f9a8d4 #fdf2f8;
 }
 
+.dark * {
+  scrollbar-color: #6b7280 #1f2937;
+}
+
 *::-webkit-scrollbar {
   width: 6px;
 }
@@ -33,14 +37,27 @@
   background: #fdf2f8;
 }
 
+.dark *::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
 *::-webkit-scrollbar-thumb {
   background-color: #f9a8d4;
   border-radius: 3px;
 }
 
+.dark *::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+
 ::selection {
   background-color: #fce7f3;
   color: #be185d;
+}
+
+.dark ::selection {
+  background-color: #831843;
+  color: #fce7f3;
 }
 
 body {
@@ -50,6 +67,26 @@ body {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   overscroll-behavior-y: contain;
+}
+
+.dark .glass-card {
+  background: rgba(17, 24, 39, 0.8);
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.dark .gradient-text {
+  background: linear-gradient(135deg, #f472b6, #f9a8d4, #e879f9);
+}
+
+.dark .gradient-border {
+  border: 2px solid transparent;
+  background: linear-gradient(#111827, #111827) padding-box,
+              linear-gradient(135deg, #f472b6, #e879f9) border-box;
+}
+
+.dark input:focus, .dark select:focus, .dark textarea:focus {
+  border-color: #f472b6;
+  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.2);
 }
 
 @keyframes float {
@@ -84,6 +121,10 @@ body {
   background: linear-gradient(90deg, transparent 0%, #fce7f3 50%, transparent 100%);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
+}
+
+.dark .animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, #831843 50%, transparent 100%);
 }
 
 .animate-fade-in {
