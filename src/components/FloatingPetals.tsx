@@ -12,30 +12,34 @@ interface Petal {
   swayAmount: number;
   opacity: number;
   imageIndex: number;
+  rotation: number;
 }
 
 const petalImages = [
+  "/images/petala-grande.png",
   "/images/petalasmaisescuras.png",
-  "/images/petalas-rosa.png",
   "/images/petalas-cereja.png",
+  "/images/petalas-rosa.png",
 ];
 
 function createPetal(id: number): Petal {
+  const seed = (id * 7919 + 104729) % 100000;
   return {
     id,
-    left: (id * 37 + 13) % 100,
-    size: (id % 3) * 10 + 20,
-    duration: (id % 7) * 2 + 12,
-    delay: (id % 5) * 1.5,
-    swayAmount: (id % 4) * 15 + 20,
-    opacity: (id % 4) * 0.05 + 0.15,
-    imageIndex: id % 3,
+    left: seed % 100,
+    size: (seed % 4) * 12 + 24,
+    duration: (seed % 6) * 3 + 10,
+    delay: (seed % 8) * 0.8,
+    swayAmount: (seed % 5) * 12 + 25,
+    opacity: (seed % 5) * 0.06 + 0.18,
+    imageIndex: id % 4,
+    rotation: seed % 360,
   };
 }
 
 export default function FloatingPetals() {
   const petals = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => createPetal(i));
+    return Array.from({ length: 18 }, (_, i) => createPetal(i));
   }, []);
 
   return (
@@ -64,6 +68,7 @@ export default function FloatingPetals() {
               width={petal.size}
               height={petal.size}
               className="object-contain"
+              style={{ transform: `rotate(${petal.rotation}deg)` }}
               unoptimized
             />
           </div>
