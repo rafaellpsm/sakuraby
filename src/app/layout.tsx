@@ -6,6 +6,7 @@ import { AuthProvider } from "@/lib/auth";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingPetals from "@/components/FloatingPetals";
+import SidePetals from "@/components/SidePetals";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-white">
         <FloatingPetals />
+        <SidePetals />
         <AuthProvider>
           <CartProvider>
             <Header />

@@ -18,75 +18,46 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden">
-      <section className="relative py-14 md:py-20 bg-gradient-to-b from-pink-50/50 via-white to-white overflow-hidden">
+      <section className="relative py-16 md:py-24 bg-gradient-to-b from-pink-50/40 via-white to-white overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-pink-100/25 rounded-full blur-3xl" />
-          <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-fuchsia-100/15 rounded-full blur-3xl" />
-          <Image
-            src="/images/flor-cerejeira.png"
-            alt=""
-            width={260}
-            height={260}
-            className="absolute -top-6 -right-6 md:right-8 opacity-15 animate-float select-none pointer-events-none"
-            priority={false}
-          />
-          <Image
-            src="/images/petala-grande.png"
-            alt=""
-            width={140}
-            height={140}
-            className="absolute bottom-0 left-4 md:left-12 opacity-15 animate-float-reverse select-none pointer-events-none"
-            priority={false}
-          />
+          <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-pink-100/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-20 left-1/4 w-[500px] h-[500px] bg-fuchsia-100/15 rounded-full blur-3xl" />
+          <div className="absolute -bottom-20 right-1/4 w-[500px] h-[500px] bg-rose-100/15 rounded-full blur-3xl" />
         </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-            <div className="flex-1 text-center md:text-left animate-fade-in">
-              <span className="inline-block px-3 py-1 bg-pink-50 text-pink-500 rounded-full text-xs font-medium mb-5 tracking-wide">
-                ✨ Novidades K-Beauty
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <div className="animate-fade-in">
+            <span className="inline-block px-4 py-1.5 bg-pink-50 text-pink-500 rounded-full text-xs font-medium mb-6 tracking-wide">
+              ✨ Novidades K-Beauty
+            </span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+              <span className="text-gray-900">Sua beleza</span>
+              <br />
+              <span className="bg-gradient-to-r from-pink-500 via-rose-400 to-fuchsia-500 bg-clip-text text-transparent">
+                começa aqui
               </span>
-              <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-bold mb-5 leading-tight">
-                <span className="text-gray-900">Sua beleza</span>
-                <br />
-                <span className="bg-gradient-to-r from-pink-500 via-rose-400 to-fuchsia-500 bg-clip-text text-transparent">
-                  começa aqui
+            </h1>
+            <p className="text-base md:text-lg text-gray-400 max-w-lg mx-auto mb-8 leading-relaxed">
+              Séruns, hidratantes e tratamentos coreanos que transformam sua rotina de beleza.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <Link
+                href="#destaques"
+                className="group px-8 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-medium rounded-full shadow-lg shadow-pink-200/50 hover:shadow-xl hover:shadow-pink-300/50 hover:from-pink-600 hover:to-rose-600 transition-all duration-300 active:scale-95"
+              >
+                <span className="flex items-center gap-2 text-sm">
+                  Ver Destaques
+                  <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
                 </span>
-              </h1>
-              <p className="text-base md:text-lg text-gray-400 max-w-md mb-8 leading-relaxed">
-                Séruns, hidratantes e tratamentos coreanos que transformam sua rotina de beleza.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center md:justify-start justify-center gap-3">
-                <Link
-                  href="#destaques"
-                  className="group px-7 py-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-medium rounded-full shadow-lg shadow-pink-200/50 hover:shadow-xl hover:shadow-pink-300/50 hover:from-pink-600 hover:to-rose-600 transition-all duration-300 active:scale-95"
-                >
-                  <span className="flex items-center gap-2 text-sm">
-                    Ver Destaques
-                    <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </span>
-                </Link>
-                <Link
-                  href="/produtos"
-                  className="px-7 py-3 text-pink-500 font-medium rounded-full hover:bg-pink-50 transition-all duration-300 text-sm"
-                >
-                  Todos os Produtos
-                </Link>
-              </div>
-            </div>
-
-            <div className="flex-shrink-0 relative w-56 h-56 md:w-72 md:h-72 animate-bounce-in">
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-100/60 to-fuchsia-100/40 rounded-full blur-3xl" />
-              <Image
-                src="/images/flor-cerejeira.png"
-                alt="SakuraBy"
-                width={280}
-                height={280}
-                className="relative z-10 w-full h-full object-contain drop-shadow-lg"
-                priority
-              />
+              </Link>
+              <Link
+                href="/produtos"
+                className="px-8 py-3.5 border border-pink-200 text-pink-500 font-medium rounded-full hover:bg-pink-50 transition-all duration-300 text-sm"
+              >
+                Todos os Produtos
+              </Link>
             </div>
           </div>
         </div>
@@ -150,18 +121,18 @@ export default function Home() {
             />
           </div>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-            <div className="bg-gradient-to-br from-pink-500 via-rose-400 to-fuchsia-500 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden">
+            <div className="bg-gradient-to-br from-pink-500 via-rose-400 to-fuchsia-500 rounded-3xl p-8 md:p-14 text-center text-white relative overflow-hidden">
               <div className="relative z-10">
-                <h2 className="text-xl md:text-2xl font-bold mb-2">Frete grátis acima de R$ 199,90</h2>
-                <p className="text-pink-100 mb-6 text-sm max-w-md mx-auto">
+                <h2 className="text-xl md:text-3xl font-bold mb-3">Frete grátis acima de R$ 199,90</h2>
+                <p className="text-pink-100 mb-7 text-sm md:text-base max-w-lg mx-auto">
                   Aproveite o frete grátis para todo o Brasil em compras acima de R$ 199,90. Cuidar da sua beleza ficou mais fácil!
                 </p>
                 <Link
                   href="/produtos"
-                  className="inline-flex items-center gap-2 px-7 py-3 bg-white text-pink-600 font-medium rounded-full hover:bg-pink-50 transition-all duration-300 shadow-lg text-sm"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-white text-pink-600 font-medium rounded-full hover:bg-pink-50 transition-all duration-300 shadow-lg text-sm"
                 >
                   Comprar agora
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>

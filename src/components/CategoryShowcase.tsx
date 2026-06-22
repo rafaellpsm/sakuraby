@@ -7,15 +7,15 @@ import { products, type Product } from "@/lib/products";
 import { useCart } from "@/lib/cart";
 
 const categoryData = [
-  { id: "Hidratantes", label: "Pele", icon: "💧", description: "Hidratação profunda", gradient: "from-pink-400 to-rose-400", textColor: "text-pink-600", bgActive: "bg-gradient-to-r from-pink-500 to-rose-500" },
-  { id: "Sérums", label: "Tratamento", icon: "💎", description: "Séruns concentrados", gradient: "from-fuchsia-400 to-pink-400", textColor: "text-fuchsia-600", bgActive: "bg-gradient-to-r from-fuchsia-500 to-pink-500" },
-  { id: "Cabelos", label: "Cabelo", icon: "🌸", description: "Cuidados capilares", gradient: "from-rose-400 to-pink-400", textColor: "text-rose-600", bgActive: "bg-gradient-to-r from-rose-500 to-pink-500" },
-  { id: "Limpeza", label: "Limpeza", icon: "🫧", description: "Limpeza suave", gradient: "from-pink-300 to-rose-300", textColor: "text-pink-500", bgActive: "bg-gradient-to-r from-pink-400 to-rose-400" },
-  { id: "Tratamento", label: "Peeling", icon: "✨", description: "Renovação e luz", gradient: "from-rose-300 to-fuchsia-300", textColor: "text-rose-500", bgActive: "bg-gradient-to-r from-rose-400 to-fuchsia-400" },
-  { id: "Olhos", label: "Olhos", icon: "👁️", description: "Contorno rejuvenescido", gradient: "from-fuchsia-300 to-pink-300", textColor: "text-fuchsia-500", bgActive: "bg-gradient-to-r from-fuchsia-400 to-pink-400" },
+  { id: "Hidratantes", label: "Pele", icon: "💧", description: "Hidratação profunda para sua pele", gradient: "from-sky-400 to-cyan-300", bgActive: "bg-gradient-to-r from-sky-500 to-cyan-400", textColor: "text-sky-600", ringColor: "ring-sky-100", emoji: "🌊" },
+  { id: "Sérums", label: "Tratamento", icon: "💎", description: "Séruns concentrados para resultados", gradient: "from-violet-400 to-purple-400", bgActive: "bg-gradient-to-r from-violet-500 to-purple-500", textColor: "text-violet-600", ringColor: "ring-violet-100", emoji: "🧬" },
+  { id: "Cabelos", label: "Cabelo", icon: "💇", description: "Cuidados capilares coreanos", gradient: "from-pink-400 to-rose-400", bgActive: "bg-gradient-to-r from-pink-500 to-rose-500", textColor: "text-pink-600", ringColor: "ring-pink-100", emoji: "🌸" },
+  { id: "Limpeza", label: "Limpeza", icon: "🫧", description: "Limpeza suave e eficaz", gradient: "from-teal-400 to-emerald-400", bgActive: "bg-gradient-to-r from-teal-500 to-emerald-500", textColor: "text-teal-600", ringColor: "ring-teal-100", emoji: "🧴" },
+  { id: "Tratamento", label: "Peeling", icon: "🌟", description: "Renovação e iluminação", gradient: "from-amber-400 to-orange-400", bgActive: "bg-gradient-to-r from-amber-500 to-orange-500", textColor: "text-amber-600", ringColor: "ring-amber-100", emoji: "✨" },
+  { id: "Olhos", label: "Olhos", icon: "👁️", description: "Contorno de olhos rejuvenescido", gradient: "from-indigo-400 to-blue-400", bgActive: "bg-gradient-to-r from-indigo-500 to-blue-500", textColor: "text-indigo-600", ringColor: "ring-indigo-100", emoji: "💫" },
 ];
 
-function MiniProductCard({ product }: { product: Product }) {
+function MiniProductCard({ product, catGradient }: { product: Product; catGradient: string }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const discount = product.originalPrice
@@ -31,21 +31,22 @@ function MiniProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className="group/card bg-white rounded-2xl border border-pink-100/60 overflow-hidden hover:shadow-lg hover:shadow-pink-100/30 transition-all duration-500 hover:-translate-y-1">
+    <div className="group/card bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-pink-100/20 transition-all duration-500 hover:-translate-y-2">
       <Link href={`/produtos/${product.id}`}>
-        <div className="relative aspect-square bg-gradient-to-br from-pink-50/50 to-rose-50/50 p-4 overflow-hidden">
+        <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-pink-50/30 p-4 overflow-hidden">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className="object-contain p-2 group-hover/card:scale-105 transition-transform duration-700 ease-out"
+            className="object-contain p-2 group-hover/card:scale-110 transition-transform duration-700 ease-out"
             sizes="(max-width: 640px) 50vw, 25vw"
           />
           {discount > 0 && (
-            <span className="absolute top-2 left-2 bg-pink-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+            <span className={`absolute top-2 left-2 bg-gradient-to-r ${catGradient} text-white text-[10px] font-bold px-2 py-0.5 rounded-full`}>
               -{discount}%
             </span>
           )}
+          <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
         </div>
       </Link>
 
@@ -82,7 +83,7 @@ function MiniProductCard({ product }: { product: Product }) {
                 ? "bg-green-400 text-white scale-110"
                 : product.stock === 0
                 ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                : "bg-pink-50 text-pink-400 hover:bg-pink-500 hover:text-white hover:scale-110 active:scale-90"
+                : `bg-gradient-to-r ${catGradient} text-white hover:scale-110 hover:shadow-lg active:scale-90`
             }`}
           >
             {added ? (
@@ -108,45 +109,55 @@ export default function CategoryShowcase() {
   const categoryProducts = products.filter((p) => p.category === activeCategory);
 
   return (
-    <section className="py-12 md:py-16 bg-gradient-to-b from-white via-pink-50/10 to-white relative overflow-hidden">
+    <section className="py-14 md:py-20 bg-gradient-to-b from-white via-pink-50/10 to-white relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-        <div className="text-center mb-8">
+        <div className="text-center mb-10">
+          <span className="inline-block px-3 py-1 bg-pink-50 text-pink-500 rounded-full text-xs font-medium mb-3">
+            Explore por categoria
+          </span>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-            Explore por <span className="text-pink-500">categoria</span>
+            Encontre o <span className="text-pink-500">perfeito</span> para você
           </h2>
           <p className="text-sm text-gray-400">
-            Passe o mouse e descubra nossos produtos
+            Passe o mouse e descubra nossos produtos favoritos
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-center gap-2.5 mb-10">
           {categoryData.map((cat) => (
             <button
               key={cat.id}
               onMouseEnter={() => setActiveCategory(cat.id)}
               onClick={() => setActiveCategory(cat.id)}
-              className={`relative px-4 py-2 rounded-full text-xs font-medium transition-all duration-400 ${
+              className={`group/cat relative px-5 py-3 rounded-2xl text-sm font-medium transition-all duration-400 overflow-hidden ${
                 activeCategory === cat.id
-                  ? `${cat.bgActive} text-white shadow-md shadow-pink-200/40`
-                  : "bg-white text-gray-400 hover:text-pink-500 hover:bg-pink-50/50 border border-pink-100/40"
+                  ? `${cat.bgActive} text-white shadow-lg shadow-${cat.textColor.replace("text-", "")}/20 scale-105`
+                  : "bg-white text-gray-500 hover:text-gray-800 border border-gray-100 hover:border-gray-200 hover:shadow-md hover:scale-105"
               }`}
             >
-              <span className="flex items-center gap-1.5">
-                <span className={`transition-transform duration-300 ${activeCategory === cat.id ? "scale-110" : ""}`}>
+              <span className="relative z-10 flex items-center gap-2">
+                <span className={`text-lg transition-all duration-300 ${
+                  activeCategory === cat.id
+                    ? "scale-110 rotate-12"
+                    : "group-hover/cat:scale-110 group-hover/cat:rotate-6"
+                }`}>
                   {cat.icon}
                 </span>
                 {cat.label}
               </span>
+              {activeCategory === cat.id && (
+                <span className="absolute inset-0 bg-white/15 animate-shimmer" />
+              )}
             </button>
           ))}
         </div>
 
         <div key={activeCategory} className="animate-fade-in">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-2.5">
-              <span className="text-lg">{activeCat.icon}</span>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{activeCat.emoji}</span>
               <div>
-                <h3 className={`text-base font-semibold ${activeCat.textColor}`}>
+                <h3 className={`text-lg font-bold ${activeCat.textColor}`}>
                   {activeCat.label}
                 </h3>
                 <p className="text-xs text-gray-400">{activeCat.description}</p>
@@ -154,10 +165,10 @@ export default function CategoryShowcase() {
             </div>
             <Link
               href={`/produtos?category=${activeCat.id}`}
-              className="text-xs text-pink-400 font-medium hover:text-pink-500 transition-colors flex items-center gap-1"
+              className={`hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium bg-gradient-to-r ${activeCat.gradient} text-white hover:shadow-lg transition-all duration-300 hover:scale-105`}
             >
               Ver todos
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
@@ -170,16 +181,29 @@ export default function CategoryShowcase() {
                 className="animate-fade-in"
                 style={{ animationDelay: `${index * 60}ms`, animationFillMode: "both" }}
               >
-                <MiniProductCard product={product} />
+                <MiniProductCard product={product} catGradient={activeCat.gradient} />
               </div>
             ))}
           </div>
 
           {categoryProducts.length === 0 && (
-            <div className="text-center py-10 animate-fade-in">
+            <div className="text-center py-12 animate-fade-in">
+              <span className="text-4xl mb-3 block">🔍</span>
               <p className="text-sm text-gray-300">Nenhum produto nesta categoria ainda</p>
             </div>
           )}
+        </div>
+
+        <div className="text-center mt-8 sm:hidden">
+          <Link
+            href={`/produtos?category=${activeCat.id}`}
+            className={`inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium bg-gradient-to-r ${activeCat.gradient} text-white hover:shadow-lg transition-all duration-300`}
+          >
+            Ver todos de {activeCat.label}
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>
