@@ -13,6 +13,9 @@ CREATE TABLE IF NOT EXISTS users (
   name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
+  phone TEXT,
+  cpf TEXT,
+  address JSONB,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

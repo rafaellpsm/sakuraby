@@ -405,3 +405,54 @@ export async function resetPassword(token: string, newPassword: string): Promise
 
   return { success: true };
 }
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  cpf?: string;
+  address?: {
+    cep: string;
+    street: string;
+    number: string;
+    complement?: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+  };
+}
+
+export async function getUserProfile(userId: string): Promise<UserProfile | null> {
+  const { data } = await supabase
+    .from("users")
+    .select("id, name, email, phone, cpf, address")
+    .eq("id", userId)
+    .single();
+
+  if (!data) return null;
+
+  return {
+    id: data.id,
+    name: data.name,
+    email: data.email,
+    phone: data.phone || undefined,
+    cpf: data.cpf || undefined,
+    address: data.address || undefined,
+  };
+}
+
+export async function updateUserProfile(userId: string, profile: Partial<UserProfile>): Promise<boolean> {
+  const updateData: Record<string, unknown> = {};
+
+  if (profile.phone !== undefined) updateData.phone = profile.phone;
+  if (profile.cpf !== undefined) updateData.cpf = profile.cpf;
+  if (profile.address !== undefined) updateData.address = profile.address;
+
+  const { error } = await supabase
+    .from("users")
+    .update(updateData)
+    .eq("id", userId);
+
+  return !error;
+}
