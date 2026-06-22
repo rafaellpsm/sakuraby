@@ -15,7 +15,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Token inválido" }, { status: 401 });
     }
 
-    const orders = getOrdersByUser(user.id);
+    const orders = await getOrdersByUser(user.id);
     return NextResponse.json({ orders });
   } catch {
     return NextResponse.json({ error: "Erro ao buscar pedidos" }, { status: 500 });
