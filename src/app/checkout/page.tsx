@@ -225,9 +225,17 @@ export default function CheckoutPage() {
                       <input
                         type="tel"
                         value={customerInfo.phone}
-                        onChange={e => setCustomerInfo(prev => ({ ...prev, phone: e.target.value }))}
+                        onChange={e => {
+                          const raw = e.target.value.replace(/\D/g, "").slice(0, 11);
+                          let formatted = raw;
+                          if (raw.length > 6) formatted = `(${raw.slice(0,2)}) ${raw.slice(2,7)}-${raw.slice(7)}`;
+                          else if (raw.length > 2) formatted = `(${raw.slice(0,2)}) ${raw.slice(2)}`;
+                          else if (raw.length > 0) formatted = `(${raw}`;
+                          setCustomerInfo(prev => ({ ...prev, phone: formatted }));
+                        }}
                         className="w-full px-4 py-3 border border-pink-200 rounded-xl text-sm"
                         placeholder="(11) 99999-9999"
+                        maxLength={16}
                       />
                     </div>
                   </div>
@@ -236,7 +244,14 @@ export default function CheckoutPage() {
                     <input
                       type="text"
                       value={customerInfo.cpf}
-                      onChange={e => setCustomerInfo(prev => ({ ...prev, cpf: e.target.value }))}
+                      onChange={e => {
+                        const raw = e.target.value.replace(/\D/g, "").slice(0, 11);
+                        let formatted = raw;
+                        if (raw.length > 9) formatted = `${raw.slice(0,3)}.${raw.slice(3,6)}.${raw.slice(6,9)}-${raw.slice(9)}`;
+                        else if (raw.length > 6) formatted = `${raw.slice(0,3)}.${raw.slice(3,6)}.${raw.slice(6)}`;
+                        else if (raw.length > 3) formatted = `${raw.slice(0,3)}.${raw.slice(3)}`;
+                        setCustomerInfo(prev => ({ ...prev, cpf: formatted }));
+                      }}
                       className="w-full px-4 py-3 border border-pink-200 rounded-xl text-sm"
                       placeholder="000.000.000-00"
                       maxLength={14}
@@ -265,7 +280,11 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         value={addressForm.cep}
-                        onChange={e => setAddressForm(prev => ({ ...prev, cep: e.target.value }))}
+                        onChange={e => {
+                          const raw = e.target.value.replace(/\D/g, "").slice(0, 8);
+                          const formatted = raw.length > 5 ? `${raw.slice(0,5)}-${raw.slice(5)}` : raw;
+                          setAddressForm(prev => ({ ...prev, cep: formatted }));
+                        }}
                         className="w-full px-4 py-3 border border-pink-200 rounded-xl text-sm"
                         placeholder="00000-000"
                         maxLength={9}
@@ -288,9 +307,13 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         value={addressForm.number}
-                        onChange={e => setAddressForm(prev => ({ ...prev, number: e.target.value }))}
+                        onChange={e => {
+                          const raw = e.target.value.replace(/\D/g, "").slice(0, 6);
+                          setAddressForm(prev => ({ ...prev, number: raw }));
+                        }}
                         className="w-full px-4 py-3 border border-pink-200 rounded-xl text-sm"
                         placeholder="123"
+                        maxLength={6}
                       />
                     </div>
                     <div className="col-span-2 sm:col-span-1">
@@ -328,8 +351,8 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         value={addressForm.state}
-                        onChange={e => setAddressForm(prev => ({ ...prev, state: e.target.value }))}
-                        className="w-full px-4 py-3 border border-pink-200 rounded-xl text-sm"
+                        onChange={e => setAddressForm(prev => ({ ...prev, state: e.target.value.replace(/[^a-zA-Z]/g, "").toUpperCase().slice(0, 2) }))}
+                        className="w-full px-4 py-3 border border-pink-200 rounded-xl text-sm uppercase"
                         maxLength={2}
                       />
                     </div>
