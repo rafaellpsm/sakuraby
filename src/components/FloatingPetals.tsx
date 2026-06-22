@@ -20,19 +20,19 @@ function createPetal(id: number): Petal {
   return {
     id,
     left: seed % 100,
-    size: (seed % 4) * 12 + 35,
-    duration: (seed % 5) * 4 + 12,
-    delay: (seed % 8) * 1.2,
-    swayAmount: (seed % 4) * 20 + 30,
-    opacity: (seed % 4) * 0.08 + 0.3,
+    size: (seed % 3) * 15 + 30,
+    duration: (seed % 4) * 5 + 15,
+    delay: (seed % 6) * 2,
+    swayAmount: (seed % 3) * 25 + 30,
+    opacity: (seed % 3) * 0.05 + 0.15,
     rotation: seed % 360,
-    isEmoji: id % 5 === 0,
+    isEmoji: id % 3 === 0,
   };
 }
 
 export default function FloatingPetals() {
   const petals = useMemo(() => {
-    return Array.from({ length: 25 }, (_, i) => createPetal(i));
+    return Array.from({ length: 10 }, (_, i) => createPetal(i));
   }, []);
 
   return (

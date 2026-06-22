@@ -6,7 +6,6 @@ import { AuthProvider } from "@/lib/auth";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingPetals from "@/components/FloatingPetals";
-import SidePetals from "@/components/SidePetals";
 
 const quicksand = Quicksand({
   variable: "--font-quicksand",
@@ -35,7 +34,6 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${quicksand.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-white" style={{ fontFamily: "var(--font-quicksand), sans-serif" }}>
         <FloatingPetals />
-        <SidePetals />
         <AuthProvider>
           <CartProvider>
             <Header />
