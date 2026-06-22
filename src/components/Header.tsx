@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useCart } from "@/lib/cart";
 import { useAuth } from "@/lib/auth";
@@ -28,8 +29,15 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-xl transition-transform duration-300 group-hover:rotate-12">🌸</span>
-            <span className="text-lg font-bold tracking-tight text-gray-900">
+            <Image
+              src="/images/logo-sakuraby.png"
+              alt="SakuraBy"
+              width={32}
+              height={32}
+              className="h-8 w-auto transition-transform duration-300 group-hover:scale-110"
+              priority
+            />
+            <span className="text-lg font-bold tracking-tight text-gray-900 hidden sm:block">
               Sakura<span className="text-pink-500">By</span>
             </span>
           </Link>
