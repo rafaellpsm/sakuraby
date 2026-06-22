@@ -31,14 +31,14 @@ function MiniProductCard({ product, catGradient }: { product: Product; catGradie
   };
 
   return (
-    <div className="group/card bg-white rounded-2xl border border-pink-100/50 overflow-hidden hover:shadow-xl hover:shadow-pink-100/30 transition-all duration-500 hover:-translate-y-2">
+    <div className="group/card bg-white rounded-2xl border border-pink-100/50 overflow-hidden hover:shadow-lg hover:shadow-pink-100/30 transition-all duration-300 hover:-translate-y-1">
       <Link href={`/produtos/${product.id}`}>
         <div className="relative aspect-square bg-gradient-to-br from-pink-50/30 to-rose-50/30 p-4 overflow-hidden">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className="object-contain p-2 group-hover/card:scale-110 transition-transform duration-700 ease-out"
+            className="object-contain p-2 group-hover/card:scale-105 transition-transform duration-300"
             sizes="(max-width: 640px) 50vw, 25vw"
           />
           {discount > 0 && (
@@ -131,28 +131,24 @@ export default function CategoryShowcase() {
               key={cat.id}
               onMouseEnter={() => setActiveCategory(cat.id)}
               onClick={() => setActiveCategory(cat.id)}
-              className={`flex-shrink-0 px-5 py-3 rounded-2xl text-sm font-medium transition-all duration-400 overflow-hidden min-h-[44px] ${
+              className={`flex-shrink-0 px-5 py-3 rounded-2xl text-sm font-medium transition-all duration-300 overflow-hidden min-h-[44px] ${
                 activeCategory === cat.id
                   ? `${cat.bgActive} text-white shadow-lg`
                   : "bg-white text-gray-500 border border-pink-100 hover:border-pink-200 hover:text-gray-800 hover:shadow-md"
               }`}
             >
               <span className="relative z-10 flex items-center gap-2">
-                <span className={`text-lg transition-all duration-300 ${
-                  activeCategory === cat.id ? "scale-110 rotate-12" : ""
-                }`}>
-                  {cat.icon}
-                </span>
+                <span className="text-lg">{cat.icon}</span>
                 {cat.label}
               </span>
             </button>
           ))}
         </div>
 
-        <div key={activeCategory} className="animate-fade-in">
+        <div key={activeCategory} className="transition-opacity duration-300">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <span className="text-2xl animate-bounce">{activeCat.emoji}</span>
+              <span className="text-2xl">{activeCat.emoji}</span>
               <div>
                 <h3 className={`text-lg font-bold ${activeCat.textColor}`}>
                   {activeCat.label}
@@ -162,7 +158,7 @@ export default function CategoryShowcase() {
             </div>
             <Link
               href={`/produtos?category=${activeCat.id}`}
-              className={`hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium bg-gradient-to-r ${activeCat.bgActive} text-white hover:shadow-lg transition-all duration-300 hover:scale-105`}
+              className={`hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium bg-gradient-to-r ${activeCat.bgActive} text-white hover:shadow-lg transition-all duration-300`}
             >
               Ver todos
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -172,12 +168,8 @@ export default function CategoryShowcase() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {categoryProducts.map((product, index) => (
-              <div
-                key={product.id}
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 60}ms`, animationFillMode: "both" }}
-              >
+            {categoryProducts.map((product) => (
+              <div key={product.id}>
                 <MiniProductCard product={product} catGradient={activeCat.bgActive} />
               </div>
             ))}

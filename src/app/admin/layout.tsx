@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@/lib/theme";
@@ -14,26 +14,40 @@ const navItems = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const pathname = usePathname();
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
+
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
+  const sidebarVisible = isDesktop || sidebarOpen;
+
   return (
     <div className="min-h-screen flex" style={{ background: isDark ? "#0a0a0a" : "#f9fafb" }}>
-      {sidebarOpen && (
+      {sidebarOpen && !isDesktop && (
         <div
-          className="fixed inset-0 z-40 lg:hidden"
+          className="fixed inset-0 z-40"
           style={{ background: "rgba(0,0,0,0.5)" }}
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       <aside
-        className="fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 lg:translate-x-0 lg:static lg:z-auto"
+        className="fixed inset-y-0 left-0 z-50 w-64 transition-transform duration-300"
         style={{
           background: isDark ? "#111111" : "#ffffff",
           borderRight: `1px solid ${isDark ? "#262626" : "#e5e7eb"}`,
-          transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
+          transform: sidebarVisible ? "translateX(0)" : "translateX(-100%)",
         }}
       >
         <div
@@ -51,7 +65,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => setSidebarOpen(false)}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all"
                 style={{
                   background: isActive
@@ -80,15 +93,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             borderBottom: `1px solid ${isDark ? "#262626" : "#e5e7eb"}`,
           }}
         >
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-2 -ml-1 rounded-lg transition-colors"
-            style={{ color: isDark ? "#9ca3af" : "#6b7280" }}
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+          {!isDesktop && (
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 -ml-1 rounded-lg transition-colors"
+              style={{ color: isDark ? "#9ca3af" : "#6b7280" }}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          )}
           <div className="flex-1" />
           <Link
             href="/"
