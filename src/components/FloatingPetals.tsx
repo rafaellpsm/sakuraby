@@ -11,35 +11,28 @@ interface Petal {
   delay: number;
   swayAmount: number;
   opacity: number;
-  imageIndex: number;
   rotation: number;
+  isEmoji: boolean;
 }
-
-const petalImages = [
-  "/images/petala-grande.png",
-  "/images/petalasmaisescuras.png",
-  "/images/petalas-cereja.png",
-  "/images/petalas-rosa.png",
-];
 
 function createPetal(id: number): Petal {
   const seed = (id * 7919 + 104729) % 100000;
   return {
     id,
     left: seed % 100,
-    size: (seed % 5) * 10 + 22,
-    duration: (seed % 6) * 3 + 10,
-    delay: (seed % 10) * 0.7,
-    swayAmount: (seed % 5) * 15 + 20,
-    opacity: (seed % 5) * 0.06 + 0.2,
-    imageIndex: id % 4,
+    size: (seed % 4) * 12 + 35,
+    duration: (seed % 5) * 4 + 12,
+    delay: (seed % 8) * 1.2,
+    swayAmount: (seed % 4) * 20 + 30,
+    opacity: (seed % 4) * 0.08 + 0.3,
     rotation: seed % 360,
+    isEmoji: id % 5 === 0,
   };
 }
 
 export default function FloatingPetals() {
   const petals = useMemo(() => {
-    return Array.from({ length: 30 }, (_, i) => createPetal(i));
+    return Array.from({ length: 25 }, (_, i) => createPetal(i));
   }, []);
 
   return (
@@ -62,15 +55,28 @@ export default function FloatingPetals() {
               "--sway": `${petal.swayAmount}px`,
             } as React.CSSProperties}
           >
-            <Image
-              src={petalImages[petal.imageIndex]}
-              alt=""
-              width={petal.size}
-              height={petal.size}
-              className="object-contain"
-              style={{ transform: `rotate(${petal.rotation}deg)` }}
-              unoptimized
-            />
+            {petal.isEmoji ? (
+              <span
+                className="text-pink-300 select-none"
+                style={{
+                  fontSize: `${petal.size}px`,
+                  transform: `rotate(${petal.rotation}deg)`,
+                  display: "block",
+                }}
+              >
+                🌸
+              </span>
+            ) : (
+              <Image
+                src="/images/petala-grande.png"
+                alt=""
+                width={petal.size}
+                height={petal.size}
+                className="object-contain"
+                style={{ transform: `rotate(${petal.rotation}deg)` }}
+                unoptimized
+              />
+            )}
           </div>
         </div>
       ))}

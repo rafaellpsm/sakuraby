@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Quicksand } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart";
 import { AuthProvider } from "@/lib/auth";
@@ -8,14 +8,10 @@ import Footer from "@/components/Footer";
 import FloatingPetals from "@/components/FloatingPetals";
 import SidePetals from "@/components/SidePetals";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const quicksand = Quicksand({
+  variable: "--font-quicksand",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -36,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
-      <body className="min-h-full flex flex-col bg-white">
+    <html lang="pt-BR" className={`${quicksand.variable} h-full`}>
+      <body className="min-h-full flex flex-col bg-white" style={{ fontFamily: "var(--font-quicksand), sans-serif" }}>
         <FloatingPetals />
         <SidePetals />
         <AuthProvider>
