@@ -38,6 +38,7 @@ export async function POST(request: Request) {
       price: Number(body.price),
       originalPrice: body.originalPrice ? Number(body.originalPrice) : undefined,
       image: body.image || "",
+      images: body.images || [],
       category: body.category,
       stock: Number(body.stock) || 0,
       rating: Number(body.rating) || 0,
