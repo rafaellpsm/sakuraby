@@ -65,13 +65,18 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">Senha</label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-sm font-medium text-gray-600">Senha</label>
+                <Link href="/esqueci-senha" className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
+                  Esqueceu a senha?
+                </Link>
+              </div>
               <input
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-pink-200 rounded-xl text-sm"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400 min-h-[44px]"
                 placeholder="Sua senha"
               />
             </div>

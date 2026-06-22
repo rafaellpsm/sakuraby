@@ -324,3 +324,84 @@ export async function deleteProduct(productId: string): Promise<boolean> {
   const { error } = await supabase.from("products").delete().eq("id", productId);
   return !error;
 }
+
+export async function createPasswordResetToken(email: string): Promise<{ success: boolean; token?: string; error?: string }> {
+  const { data: user } = await supabase
+    .from("users")
+    .select("id")
+    .eq("email", email)
+    .single();
+
+  if (!user) {
+    return { success: false, error: "E-mail não encontrado" };
+  }
+
+  // Generate a random token
+  const token = Array.from({ length: 32 }, () =>
+    Math.floor(Math.random() * 16).toString(16)
+  ).join("");
+
+  // Token expires in 1 hour
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+
+  // Delete any existing tokens for this user
+  await supabase
+    .from("password_resets")
+    .delete()
+    .eq("user_id", user.id);
+
+  // Insert new token
+  const { error } = await supabase.from("password_resets").insert({
+    user_id: user.id,
+    token,
+    expires_at: expiresAt,
+  });
+
+  if (error) {
+    return { success: false, error: "Erro ao gerar token" };
+  }
+
+  return { success: true, token };
+}
+
+export async function resetPassword(token: string, newPassword: string): Promise<{ success: boolean; error?: string }> {
+  // Find the token
+  const { data: resetToken } = await supabase
+    .from("password_resets")
+    .select("user_id, expires_at, used")
+    .eq("token", token)
+    .single();
+
+  if (!resetToken) {
+    return { success: false, error: "Token inválido" };
+  }
+
+  if (resetToken.used) {
+    return { success: false, error: "Token já utilizado" };
+  }
+
+  if (new Date(resetToken.expires_at) < new Date()) {
+    return { success: false, error: "Token expirado" };
+  }
+
+  // Hash the new password
+  const hashedPassword = await hashPassword(newPassword);
+
+  // Update the user's password
+  const { error: updateError } = await supabase
+    .from("users")
+    .update({ password: hashedPassword })
+    .eq("id", resetToken.user_id);
+
+  if (updateError) {
+    return { success: false, error: "Erro ao atualizar senha" };
+  }
+
+  // Mark token as used
+  await supabase
+    .from("password_resets")
+    .update({ used: true })
+    .eq("token", token);
+
+  return { success: true };
+}

@@ -73,3 +73,23 @@ CREATE TABLE IF NOT EXISTS products (
 -- Índice para busca por categoria
 CREATE INDEX IF NOT EXISTS idx_products_category ON products(category);
 CREATE INDEX IF NOT EXISTS idx_products_featured ON products(featured);
+
+-- Tabela de tokens de redefinição de senha
+CREATE TABLE IF NOT EXISTS password_resets (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  token TEXT NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL,
+  used BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Habilitar RLS
+ALTER TABLE password_resets ENABLE ROW LEVEL SECURITY;
+
+-- Política de acesso
+CREATE POLICY "Service role can do everything" ON password_resets FOR ALL USING (true);
+
+-- Índice para busca por token
+CREATE INDEX IF NOT EXISTS idx_password_resets_token ON password_resets(token);
+CREATE INDEX IF NOT EXISTS idx_password_resets_user_id ON password_resets(user_id);
