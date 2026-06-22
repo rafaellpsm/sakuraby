@@ -145,7 +145,7 @@ export default function CategoryShowcase() {
           ))}
         </div>
 
-        <div key={activeCategory} className="transition-opacity duration-300">
+        <div className="transition-all duration-200 ease-out">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <span className="text-2xl">{activeCat.emoji}</span>

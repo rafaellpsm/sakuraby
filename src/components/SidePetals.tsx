@@ -35,7 +35,7 @@ function createSidePetal(id: number): SidePetal {
 
 export default function SidePetals() {
   const petals = useMemo(() => {
-    return Array.from({ length: 16 }, (_, i) => createSidePetal(i));
+    return Array.from({ length: 8 }, (_, i) => createSidePetal(i));
   }, []);
 
   return (

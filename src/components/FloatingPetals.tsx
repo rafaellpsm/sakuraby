@@ -32,7 +32,7 @@ function createPetal(id: number): Petal {
 
 export default function FloatingPetals() {
   const petals = useMemo(() => {
-    return Array.from({ length: 15 }, (_, i) => createPetal(i));
+    return Array.from({ length: 8 }, (_, i) => createPetal(i));
   }, []);
 
   return (

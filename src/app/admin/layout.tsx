@@ -85,7 +85,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
       </aside>
 
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className={`flex-1 flex flex-col min-w-0 ${isDesktop ? "ml-64" : ""}`}>
         <header
           className="sticky top-0 z-30 backdrop-blur-xl h-16 flex items-center px-4 sm:px-6 gap-4"
           style={{

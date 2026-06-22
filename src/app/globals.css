@@ -37,14 +37,14 @@
 .dark {
   --bg-primary: #0a0a0a;
   --bg-secondary: #111111;
-  --bg-card: #161616;
+  --bg-card: #141414;
   --bg-input: #1a1a1a;
-  --text-primary: #f3f4f6;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
-  --border-color: #262626;
-  --border-light: #1f1f1f;
-  --shadow-color: rgba(0, 0, 0, 0.3);
+  --text-primary: #e5e5e5;
+  --text-secondary: #888888;
+  --text-muted: #555555;
+  --border-color: #1e1e1e;
+  --border-light: #171717;
+  --shadow-color: rgba(0, 0, 0, 0.4);
 }
 
 /* ===== BASE STYLES ===== */
@@ -201,6 +201,14 @@ body {
   background-clip: text;
 }
 
+.dark .text-gradient-pink,
+.dark .text-gradient-heading {
+  background: linear-gradient(to right, #b84578, #c7648f, #a835b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* ===== UTILITY CLASSES ===== */
 .bg-page { background: var(--bg-primary); }
 .bg-card { background: var(--bg-card); }
@@ -214,11 +222,11 @@ body {
 
 .dark .bg-white { background-color: var(--bg-card); }
 .dark .bg-gray-50 { background-color: var(--bg-secondary); }
-.dark .bg-gray-100 { background-color: #262626; }
-.dark .bg-pink-50 { background-color: #1a1018; }
-.dark .bg-green-50 { background-color: #0a1a12; }
-.dark .bg-red-50 { background-color: #1a0a0a; }
-.dark .bg-amber-50 { background-color: #1a150a; }
+.dark .bg-gray-100 { background-color: #1e1e1e; }
+.dark .bg-pink-50 { background-color: #151013; }
+.dark .bg-green-50 { background-color: #0d1510; }
+.dark .bg-red-50 { background-color: #150d0d; }
+.dark .bg-amber-50 { background-color: #15120d; }
 
 .dark .text-gray-900,
 .dark .text-gray-800,
@@ -230,33 +238,40 @@ body {
 .dark .text-gray-400,
 .dark .text-gray-300 { color: #6b7280; }
 
-.dark .text-pink-500 { color: #f472b6; }
-.dark .text-pink-600 { color: #ec4899; }
-.dark .text-green-500 { color: #4ade80; }
-.dark .text-green-600 { color: #22c55e; }
-.dark .text-green-700 { color: #4ade80; }
-.dark .text-amber-400 { color: #fbbf24; }
-.dark .text-amber-700 { color: #fbbf24; }
-.dark .text-red-500 { color: #ef4444; }
-.dark .text-red-600 { color: #dc2626; }
-.dark .text-red-700 { color: #ef4444; }
+.dark .text-pink-500 { color: #d4628f; }
+.dark .text-pink-600 { color: #c74b7a; }
+.dark .text-green-500 { color: #3ab56a; }
+.dark .text-green-600 { color: #2a9d55; }
+.dark .text-green-700 { color: #3ab56a; }
+.dark .text-amber-400 { color: #c9a54a; }
+.dark .text-amber-700 { color: #c9a54a; }
+.dark .text-red-500 { color: #c43e3e; }
+.dark .text-red-600 { color: #b33030; }
+.dark .text-red-700 { color: #c43e3e; }
 
-.dark .border-gray-100 { border-color: #262626; }
-.dark .border-gray-200 { border-color: #333333; }
-.dark .border-pink-100 { border-color: #2a1a24; }
-.dark .border-pink-200 { border-color: #3d2030; }
+.dark .border-gray-100 { border-color: #1e1e1e; }
+.dark .border-gray-200 { border-color: #252525; }
+.dark .border-pink-100 { border-color: #221520; }
+.dark .border-pink-200 { border-color: #2e1a28; }
 
 .dark input, .dark select, .dark textarea {
   background-color: var(--bg-input);
-  border-color: #333333;
+  border-color: #252525;
   color: var(--text-primary);
 }
 
-.dark .hover\:bg-gray-50:hover { background-color: #262626; }
-.dark .hover\:bg-gray-100:hover { background-color: #333333; }
-.dark .hover\:bg-pink-50:hover { background-color: #2a1a24; }
-.dark .hover\:text-gray-900:hover { color: #f3f4f6; }
-.dark .hover\:text-pink-500:hover { color: #f472b6; }
+.dark .hover\:bg-gray-50:hover { background-color: #1e1e1e; }
+.dark .hover\:bg-gray-100:hover { background-color: #252525; }
+.dark .hover\:bg-pink-50:hover { background-color: #221520; }
+.dark .hover\:text-gray-900:hover { color: #e5e5e5; }
+.dark .hover\:text-pink-500:hover { color: #d4628f; }
+
+.dark .border-pink-200 { border-color: #2e1a28; }
+.dark .bg-pink-100 { background-color: #1e1218; }
+.dark .from-pink-50 { --tw-gradient-from: #151013 !important; }
+.dark .to-rose-50 { --tw-gradient-to: #151013 !important; }
+.dark .from-pink-100 { --tw-gradient-from: #1e1218 !important; }
+.dark .bg-gradient-to-br.from-pink-50.to-rose-50 { background: linear-gradient(to bottom right, #151013, #151013) !important; }
 
 /* Fix gradient backgrounds in dark mode */
 .dark .bg-gradient-to-b.from-pink-50\/50.to-white { background: linear-gradient(to bottom, rgba(26, 16, 24, 0.3), var(--bg-primary)) !important; }
@@ -265,19 +280,32 @@ body {
 .dark .bg-gradient-to-b.from-gray-50 { background: var(--bg-secondary) !important; }
 .dark .bg-gradient-to-br.from-pink-50 { background: #1a1018 !important; }
 .dark .bg-gradient-to-br.from-pink-50.to-rose-50 { background: linear-gradient(to bottom right, #1a1018, #1a1018) !important; }
-.dark .bg-gradient-to-br.from-pink-50\/30 { background: rgba(26, 16, 24, 0.3) !important; }
+.dark .bg-gradient-to-br.from-pink-50\/30 { background: rgba(21, 16, 19, 0.3) !important; }
+.dark .bg-gradient-to-br.from-pink-50\/40 { background: rgba(21, 16, 19, 0.4) !important; }
+.dark .bg-gradient-to-br.from-pink-50 { background: #151013 !important; }
+.dark .from-pink-50\/50 { --tw-gradient-from: rgba(21, 16, 19, 0.5) !important; }
+.dark .bg-gradient-to-b.from-white.via-pink-50\/10.to-white { background: linear-gradient(to bottom, var(--bg-primary), rgba(21, 16, 19, 0.1), var(--bg-primary)) !important; }
 .dark .bg-white\/70 { background: rgba(22, 22, 22, 0.7) !important; }
 .dark .bg-white\/80 { background: rgba(22, 22, 22, 0.8) !important; }
 .dark .bg-white\/90 { background: rgba(22, 22, 22, 0.9) !important; }
-.dark .from-pink-100\/40 { --tw-gradient-from: rgba(60, 20, 40, 0.4) !important; }
-.dark .via-rose-50\/30 { --tw-gradient-via: rgba(26, 16, 24, 0.3) !important; }
+.dark .from-pink-100\/40 { --tw-gradient-from: rgba(40, 15, 30, 0.4) !important; }
+.dark .via-rose-50\/30 { --tw-gradient-via: rgba(20, 12, 18, 0.3) !important; }
+.dark .from-white { --tw-gradient-from: var(--bg-primary) !important; }
+.dark .via-pink-50\/10 { --tw-gradient-via: rgba(21, 16, 19, 0.1) !important; }
+.dark .to-white { --tw-gradient-to: var(--bg-primary) !important; }
 
 /* More page fixes */
 .dark .bg-gradient-to-b.from-pink-100\/40.via-rose-50\/30.to-transparent { 
   background: linear-gradient(to bottom, rgba(60, 20, 40, 0.3), rgba(26, 16, 24, 0.2), transparent) !important; 
 }
-.dark .shadow-pink-100\/30 { box-shadow: 0 4px 15px rgba(236, 72, 153, 0.08) !important; }
-.dark .shadow-pink-200\/50 { box-shadow: 0 4px 20px rgba(236, 72, 153, 0.1) !important; }
+.dark .shadow-pink-100\/30 { box-shadow: 0 4px 15px rgba(236, 72, 153, 0.05) !important; }
+.dark .shadow-pink-200\/50 { box-shadow: 0 4px 20px rgba(236, 72, 153, 0.07) !important; }
+.dark .shadow-pink-100\/20 { box-shadow: 0 4px 10px rgba(236, 72, 153, 0.04) !important; }
+.dark .border-pink-100\/50 { border-color: rgba(34, 21, 32, 0.5) !important; }
+.dark .from-pink-50\/40 { --tw-gradient-from: rgba(21, 16, 19, 0.4) !important; }
+.dark .to-rose-50\/40 { --tw-gradient-to: rgba(21, 16, 19, 0.4) !important; }
+.dark .from-pink-50\/30 { --tw-gradient-from: rgba(21, 16, 19, 0.3) !important; }
+.dark .to-rose-50\/30 { --tw-gradient-to: rgba(21, 16, 19, 0.3) !important; }
 
 /* ===== ANIMATIONS ===== */
 @keyframes float {
@@ -392,6 +420,11 @@ input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: #f472b6;
   box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+}
+
+.dark input:focus, .dark select:focus, .dark textarea:focus {
+  border-color: #a8456e;
+  box-shadow: 0 0 0 3px rgba(168, 69, 110, 0.15);
 }
 
 @media (prefers-reduced-motion: reduce) {
