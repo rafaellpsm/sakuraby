@@ -258,6 +258,20 @@ body {
 .dark .hover\:text-gray-900:hover { color: #f3f4f6; }
 .dark .hover\:text-pink-500:hover { color: #f472b6; }
 
+/* Fix gradient backgrounds in dark mode */
+.dark .bg-gradient-to-b.from-pink-50\/50.to-white { background: linear-gradient(to bottom, rgba(26, 16, 24, 0.3), var(--bg-primary)) !important; }
+.dark .bg-gradient-to-b.from-white.to-pink-50\/50 { background: linear-gradient(to bottom, var(--bg-primary), rgba(26, 16, 24, 0.2)) !important; }
+.dark .bg-gradient-to-b.from-white { background: var(--bg-primary) !important; }
+.dark .bg-gradient-to-b.from-gray-50 { background: var(--bg-secondary) !important; }
+.dark .bg-gradient-to-br.from-pink-50 { background: #1a1018 !important; }
+.dark .bg-gradient-to-br.from-pink-50.to-rose-50 { background: linear-gradient(to bottom right, #1a1018, #1a1018) !important; }
+.dark .bg-gradient-to-br.from-pink-50\/30 { background: rgba(26, 16, 24, 0.3) !important; }
+.dark .bg-white\/70 { background: rgba(22, 22, 22, 0.7) !important; }
+.dark .bg-white\/80 { background: rgba(22, 22, 22, 0.8) !important; }
+.dark .bg-white\/90 { background: rgba(22, 22, 22, 0.9) !important; }
+.dark .from-pink-100\/40 { --tw-gradient-from: rgba(60, 20, 40, 0.4) !important; }
+.dark .via-rose-50\/30 { --tw-gradient-via: rgba(26, 16, 24, 0.3) !important; }
+
 /* ===== ANIMATIONS ===== */
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
