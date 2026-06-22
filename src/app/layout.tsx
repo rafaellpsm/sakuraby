@@ -6,6 +6,7 @@ import { AuthProvider } from "@/lib/auth";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingPetals from "@/components/FloatingPetals";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const quicksand = Quicksand({
   variable: "--font-quicksand",
@@ -39,6 +40,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <WhatsAppButton />
           </CartProvider>
         </AuthProvider>
       </body>

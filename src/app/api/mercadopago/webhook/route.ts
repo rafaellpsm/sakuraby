@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getOrderById, saveOrder, type Order } from "@/lib/db";
+import { sendOrderConfirmationEmail } from "@/lib/email";
 
 export async function POST(request: Request) {
   try {
@@ -46,6 +47,25 @@ export async function POST(request: Request) {
             };
 
             await saveOrder(updatedOrder);
+
+            // Send confirmation email when payment is approved
+            if (newStatus === "approved") {
+              try {
+                await sendOrderConfirmationEmail({
+                  orderId: updatedOrder.id,
+                  customerName: updatedOrder.customerName,
+                  customerEmail: updatedOrder.customerEmail,
+                  items: updatedOrder.items,
+                  subtotal: updatedOrder.subtotal,
+                  shippingCost: updatedOrder.shippingCost,
+                  total: updatedOrder.total,
+                  shippingAddress: updatedOrder.shippingAddress,
+                  status: "approved",
+                });
+              } catch (emailError) {
+                console.error("Error sending confirmation email:", emailError);
+              }
+            }
           }
         }
       }
