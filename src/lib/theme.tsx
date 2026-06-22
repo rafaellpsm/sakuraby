@@ -9,34 +9,33 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextType>({
+  theme: "light",
+  toggleTheme: () => {},
+});
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("sakuraby-theme") as Theme | null;
-    const initial = stored || "light";
+    const saved = localStorage.getItem("theme") as Theme | null;
+    const initial = saved || "light";
     setTheme(initial);
-    document.documentElement.setAttribute("data-theme", initial);
     document.documentElement.classList.toggle("dark", initial === "dark");
+    setMounted(true);
   }, []);
 
   const toggleTheme = useCallback(() => {
     setTheme((prev) => {
       const next = prev === "light" ? "dark" : "light";
-      localStorage.setItem("sakuraby-theme", next);
-      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
       document.documentElement.classList.toggle("dark", next === "dark");
       return next;
     });
   }, []);
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
+  if (!mounted) return <>{children}</>;
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
@@ -46,7 +45,5 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useTheme() {
-  const ctx = useContext(ThemeContext);
-  if (!ctx) return { theme: "light" as Theme, toggleTheme: () => {} };
-  return ctx;
+  return useContext(ThemeContext);
 }
