@@ -146,6 +146,29 @@ body {
 .dark footer { background-color: #0f0f0f !important; border-color: #2a2a2a !important; }
 .dark header { color: #e5e7eb !important; }
 
+.dark .bg-clip-text { -webkit-text-fill-color: transparent; }
+.dark [class*="bg-gradient-to-r"][class*="bg-clip-text"] {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.dark a { color: inherit; }
+.dark .text-pink-500 { color: #f472b6 !important; }
+.dark .text-pink-600 { color: #ec4899 !important; }
+.dark .text-rose-500 { color: #fb7185 !important; }
+.dark .text-green-500 { color: #4ade80 !important; }
+.dark .text-green-600 { color: #22c55e !important; }
+.dark .text-amber-400 { color: #fbbf24 !important; }
+.dark .text-amber-600 { color: #f59e0b !important; }
+.dark .text-red-500 { color: #ef4444 !important; }
+.dark .text-red-600 { color: #dc2626 !important; }
+.dark .text-red-700 { color: #ef4444 !important; }
+.dark .text-green-700 { color: #4ade80 !important; }
+.dark .text-blue-600 { color: #60a5fa !important; }
+.dark .text-orange-600 { color: #fb923c !important; }
+.dark .text-amber-700 { color: #fbbf24 !important; }
+
 .dark .glass-card {
   background: rgba(17, 24, 39, 0.8);
   border-color: rgba(75, 85, 99, 0.3);
