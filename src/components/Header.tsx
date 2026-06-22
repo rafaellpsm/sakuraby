@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useCart } from "@/lib/cart";
 import { useAuth } from "@/lib/auth";
@@ -23,22 +22,16 @@ export default function Header() {
   return (
     <header className={`sticky top-0 z-50 transition-all duration-500 ${
       scrolled
-        ? "bg-white/90 backdrop-blur-xl border-b border-gray-100"
+        ? "bg-white/90 backdrop-blur-xl border-b border-pink-100/50 shadow-sm shadow-pink-100/20"
         : "bg-transparent"
     }`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 group">
-            <Image
-              src="/images/logo-sakuraby.png"
-              alt="SakuraBy"
-              width={32}
-              height={32}
-              className="h-8 w-auto transition-transform duration-300 group-hover:scale-110"
-              priority
-            />
-            <span className="text-lg font-bold tracking-tight text-gray-900 hidden sm:block">
-              Sakura<span className="text-pink-500">By</span>
+            <span className="text-2xl transition-all duration-500 group-hover:scale-125 group-hover:rotate-12 drop-shadow-sm">🌸</span>
+            <span className="text-lg font-bold tracking-tight">
+              <span className="bg-gradient-to-r from-pink-500 via-rose-400 to-fuchsia-500 bg-clip-text text-transparent">Sakura</span>
+              <span className="text-gray-800">By</span>
             </span>
           </Link>
 

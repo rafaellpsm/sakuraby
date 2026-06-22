@@ -23,8 +23,8 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <Link href={`/produtos/${product.id}`} className="group block">
-      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg hover:shadow-gray-100/50 transition-all duration-500 hover:-translate-y-1">
-        <div className="relative aspect-square bg-gray-50/50 p-4 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-pink-100/50 overflow-hidden hover:shadow-xl hover:shadow-pink-100/30 transition-all duration-500 hover:-translate-y-1">
+        <div className="relative aspect-square bg-gradient-to-br from-pink-50/40 to-rose-50/40 p-4 overflow-hidden">
           <Image
             src={product.image}
             alt={product.name}
@@ -34,13 +34,13 @@ export default function ProductCard({ product }: { product: Product }) {
           />
 
           {discount > 0 && (
-            <span className="absolute top-2.5 left-2.5 bg-gray-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+            <span className="absolute top-2.5 left-2.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
               -{discount}%
             </span>
           )}
 
           {product.stock <= 5 && product.stock > 0 && (
-            <span className="absolute top-2.5 right-2.5 bg-amber-50 text-amber-600 text-[10px] font-medium px-2 py-0.5 rounded-full border border-amber-100">
+            <span className="absolute top-2.5 right-2.5 bg-pink-50 text-pink-600 text-[10px] font-medium px-2 py-0.5 rounded-full border border-pink-100">
               Últimas {product.stock}
             </span>
           )}
@@ -51,7 +51,7 @@ export default function ProductCard({ product }: { product: Product }) {
             {[...Array(5)].map((_, i) => (
               <svg
                 key={i}
-                className={`w-3 h-3 ${i < Math.floor(product.rating) ? "text-amber-400" : "text-gray-100"}`}
+                className={`w-3 h-3 ${i < Math.floor(product.rating) ? "text-amber-400" : "text-pink-100"}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -60,7 +60,7 @@ export default function ProductCard({ product }: { product: Product }) {
             ))}
           </div>
 
-          <h3 className="text-xs font-medium text-gray-700 line-clamp-2 mb-2 group-hover:text-gray-900 transition-colors duration-300 min-h-[2rem]">
+          <h3 className="text-xs font-medium text-gray-700 line-clamp-2 mb-2 group-hover:text-pink-600 transition-colors duration-300 min-h-[2rem]">
             {product.name}
           </h3>
 
@@ -79,12 +79,12 @@ export default function ProductCard({ product }: { product: Product }) {
             <button
               onClick={handleAdd}
               disabled={product.stock === 0}
-              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 min-w-[36px] min-h-[36px] ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
                 added
                   ? "bg-green-500 text-white scale-110"
                   : product.stock === 0
-                  ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                  : "bg-gray-900 text-white hover:bg-gray-800 active:scale-90"
+                  ? "bg-pink-50 text-pink-300 cursor-not-allowed"
+                  : "bg-gradient-to-r from-pink-500 to-rose-500 text-white hover:from-pink-600 hover:to-rose-600 hover:scale-110 hover:shadow-lg hover:shadow-pink-200 active:scale-90"
               }`}
             >
               {added ? (
