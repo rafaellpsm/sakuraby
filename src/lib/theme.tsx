@@ -20,6 +20,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const stored = localStorage.getItem("sakuraby-theme") as Theme | null;
     const initial = stored || "light";
     setTheme(initial);
+    document.documentElement.setAttribute("data-theme", initial);
     document.documentElement.classList.toggle("dark", initial === "dark");
   }, []);
 
@@ -27,6 +28,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme((prev) => {
       const next = prev === "light" ? "dark" : "light";
       localStorage.setItem("sakuraby-theme", next);
+      document.documentElement.setAttribute("data-theme", next);
       document.documentElement.classList.toggle("dark", next === "dark");
       return next;
     });
