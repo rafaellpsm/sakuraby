@@ -1,33 +1,11 @@
 import { SignJWT, jwtVerify } from "jose";
 import bcryptjs from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
-import fs from "fs";
-import path from "path";
+import { supabase } from "./supabase";
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "sakuraby-super-secret-key-change-in-production-2024"
 );
-
-const USERS_FILE = path.join(process.cwd(), "data", "users.json");
-const ORDERS_FILE = path.join(process.cwd(), "data", "orders.json");
-
-function ensureDataDir() {
-  const dataDir = path.join(process.cwd(), "data");
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-}
-
-function readUsers(): Array<{ id: string; name: string; email: string; password: string }> {
-  ensureDataDir();
-  if (!fs.existsSync(USERS_FILE)) return [];
-  return JSON.parse(fs.readFileSync(USERS_FILE, "utf-8"));
-}
-
-function writeUsers(users: Array<{ id: string; name: string; email: string; password: string }>) {
-  ensureDataDir();
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
-}
 
 export interface Order {
   id: string;
@@ -65,17 +43,6 @@ export interface Order {
   createdAt: string;
 }
 
-function readOrders(): Order[] {
-  ensureDataDir();
-  if (!fs.existsSync(ORDERS_FILE)) return [];
-  return JSON.parse(fs.readFileSync(ORDERS_FILE, "utf-8"));
-}
-
-function writeOrders(orders: Order[]) {
-  ensureDataDir();
-  fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2));
-}
-
 export async function hashPassword(password: string): Promise<string> {
   return bcryptjs.hash(password, 12);
 }
@@ -102,23 +69,36 @@ export async function verifyToken(token: string): Promise<{ id: string; name: st
 }
 
 export async function registerUser(name: string, email: string, password: string) {
-  const users = readUsers();
-  if (users.find(u => u.email === email)) {
+  const { data: existing } = await supabase
+    .from("users")
+    .select("id")
+    .eq("email", email)
+    .single();
+
+  if (existing) {
     return { success: false, error: "E-mail já cadastrado" };
   }
 
   const hashedPassword = await hashPassword(password);
   const user = { id: uuidv4(), name, email, password: hashedPassword };
-  users.push(user);
-  writeUsers(users);
+
+  const { error } = await supabase.from("users").insert(user);
+  if (error) {
+    console.error("Supabase insert error:", error.message, error.details, error.hint);
+    return { success: false, error: `Erro ao criar conta: ${error.message}` };
+  }
 
   const token = await createToken(user);
   return { success: true, token, user: { id: user.id, name: user.name, email: user.email } };
 }
 
 export async function loginUser(email: string, password: string) {
-  const users = readUsers();
-  const user = users.find(u => u.email === email);
+  const { data: user } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", email)
+    .single();
+
   if (!user) {
     return { success: false, error: "E-mail ou senha inválidos" };
   }
@@ -132,20 +112,82 @@ export async function loginUser(email: string, password: string) {
   return { success: true, token, user: { id: user.id, name: user.name, email: user.email } };
 }
 
-export function saveOrder(order: Order) {
-  const orders = readOrders();
-  orders.push(order);
-  writeOrders(orders);
+export async function saveOrder(order: Order) {
+  const { error } = await supabase.from("orders").insert({
+    id: order.id,
+    user_id: order.userId || null,
+    customer_name: order.customerName,
+    customer_email: order.customerEmail,
+    customer_phone: order.customerPhone,
+    customer_cpf: order.customerCPF,
+    shipping_address: order.shippingAddress,
+    items: order.items,
+    shipping_option: order.shippingOption,
+    subtotal: order.subtotal,
+    shipping_cost: order.shippingCost,
+    total: order.total,
+    status: order.status,
+    payment_id: order.paymentId || null,
+    created_at: order.createdAt,
+  });
+
+  if (error) {
+    console.error("Error saving order:", error);
+  }
 }
 
-export function getOrdersByUser(userId: string): Order[] {
-  const orders = readOrders();
-  return orders.filter(o => o.userId === userId).sort((a, b) =>
-    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+export async function getOrdersByUser(userId: string): Promise<Order[]> {
+  const { data } = await supabase
+    .from("orders")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+
+  if (!data) return [];
+
+  return data.map((row) => ({
+    id: row.id,
+    userId: row.user_id,
+    customerName: row.customer_name,
+    customerEmail: row.customer_email,
+    customerPhone: row.customer_phone,
+    customerCPF: row.customer_cpf,
+    shippingAddress: row.shipping_address,
+    items: row.items,
+    shippingOption: row.shipping_option,
+    subtotal: row.subtotal,
+    shippingCost: row.shipping_cost,
+    total: row.total,
+    status: row.status,
+    paymentId: row.payment_id,
+    createdAt: row.created_at,
+  }));
 }
 
-export function getOrderById(orderId: string): Order | undefined {
-  const orders = readOrders();
-  return orders.find(o => o.id === orderId);
+export async function getOrderById(orderId: string): Promise<Order | undefined> {
+  const { data } = await supabase
+    .from("orders")
+    .select("*")
+    .eq("id", orderId)
+    .single();
+
+  if (!data) return undefined;
+
+  return {
+    id: data.id,
+    userId: data.user_id,
+    customerName: data.customer_name,
+    customerEmail: data.customer_email,
+    customerPhone: data.customer_phone,
+    customerCPF: data.customer_cpf,
+    shippingAddress: data.shipping_address,
+    items: data.items,
+    shippingOption: data.shipping_option,
+    subtotal: data.subtotal,
+    shippingCost: data.shipping_cost,
+    total: data.total,
+    status: data.status,
+    paymentId: data.payment_id,
+    createdAt: data.created_at,
+  };
 }

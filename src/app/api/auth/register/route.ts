@@ -18,6 +18,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: "E-mail inválido" }, { status: 400 });
     }
 
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error("Supabase env vars missing:", {
+        url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+        key: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+      });
+      return NextResponse.json({ success: false, error: "Banco de dados não configurado. Verifique as variáveis de ambiente." }, { status: 500 });
+    }
+
     const result = await registerUser(name, email.toLowerCase().trim(), password);
 
     if (!result.success) {
@@ -25,7 +33,8 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(result);
-  } catch {
+  } catch (error) {
+    console.error("Register error:", error);
     return NextResponse.json({ success: false, error: "Erro interno do servidor" }, { status: 500 });
   }
 }
