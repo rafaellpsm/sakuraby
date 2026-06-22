@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS products (
   price NUMERIC(10,2) NOT NULL,
   original_price NUMERIC(10,2),
   image TEXT NOT NULL DEFAULT '',
+  images TEXT[] DEFAULT '{}',
   category TEXT NOT NULL,
   stock INTEGER NOT NULL DEFAULT 0,
   rating NUMERIC(2,1) DEFAULT 0,

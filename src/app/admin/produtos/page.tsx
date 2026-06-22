@@ -13,6 +13,7 @@ interface Product {
   price: number;
   originalPrice?: number;
   image: string;
+  images?: string[];
   category: string;
   stock: number;
   rating: number;
@@ -30,6 +31,7 @@ const emptyProduct: Product = {
   price: 0,
   originalPrice: undefined,
   image: "",
+  images: [],
   category: "Hidratantes",
   stock: 0,
   rating: 0,
@@ -288,7 +290,7 @@ export default function AdminProdutos() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">URL da Imagem</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Imagem Principal</label>
                 <input
                   type="text"
                   value={form.image}
@@ -296,6 +298,18 @@ export default function AdminProdutos() {
                   className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400 min-h-[44px]"
                   placeholder="/images/produtos/arquivo.webp"
                 />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-xs font-medium text-gray-500 mb-1">Imagens Adicionais (uma URL por linha)</label>
+                <textarea
+                  value={(form.images || []).join("\n")}
+                  onChange={(e) => setForm({ ...form, images: e.target.value.split("\n").filter(u => u.trim()) })}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400 min-h-[80px] resize-none font-mono text-xs"
+                  placeholder="/images/produtos/foto2.webp&#10;/images/produtos/foto3.webp"
+                  rows={3}
+                />
+                <p className="text-[10px] text-gray-400 mt-1">Adicione URLs adicionais para criar uma galeria no produto</p>
               </div>
 
               <div>
@@ -384,15 +398,29 @@ export default function AdminProdutos() {
             {form.image && (
               <div className="mt-4">
                 <label className="block text-xs font-medium text-gray-500 mb-2">Preview</label>
-                <div className="w-32 h-32 bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
-                  <Image
-                    src={form.image}
-                    alt="Preview"
-                    width={128}
-                    height={128}
-                    className="w-full h-full object-contain"
-                    unoptimized
-                  />
+                <div className="flex flex-wrap gap-2">
+                  <div className="w-20 h-20 bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
+                    <Image
+                      src={form.image}
+                      alt="Principal"
+                      width={80}
+                      height={80}
+                      className="w-full h-full object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  {(form.images || []).map((img, i) => (
+                    <div key={i} className="w-20 h-20 bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
+                      <Image
+                        src={img}
+                        alt={`Extra ${i + 1}`}
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-contain"
+                        unoptimized
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

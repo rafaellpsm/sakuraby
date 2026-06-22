@@ -14,6 +14,7 @@ export default function ProductDetailPage() {
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(0);
 
   if (!product) {
     return (
@@ -28,6 +29,9 @@ export default function ProductDetailPage() {
       </div>
     );
   }
+
+  const allImages = [product.image, ...(product.images || [])].filter(Boolean);
+  const currentImage = allImages[selectedImage] || product.image;
 
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -55,19 +59,45 @@ export default function ProductDetailPage() {
         </nav>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
-          <div className="relative aspect-square bg-gradient-to-br from-pink-50 to-rose-50 rounded-3xl overflow-hidden">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="object-contain p-8"
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-            {discount > 0 && (
-              <span className="absolute top-4 left-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-sm font-bold px-3 py-1.5 rounded-full">
-                -{discount}%
-              </span>
+          <div className="space-y-3">
+            <div className="relative aspect-square bg-gradient-to-br from-pink-50 to-rose-50 rounded-3xl overflow-hidden">
+              <Image
+                src={currentImage}
+                alt={product.name}
+                fill
+                className="object-contain p-8 transition-all duration-300"
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+              {discount > 0 && (
+                <span className="absolute top-4 left-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-sm font-bold px-3 py-1.5 rounded-full shadow-md">
+                  -{discount}%
+                </span>
+              )}
+            </div>
+
+            {allImages.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                {allImages.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImage(index)}
+                    className={`relative w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all duration-200 ${
+                      selectedImage === index
+                        ? "border-pink-500 shadow-md shadow-pink-200"
+                        : "border-gray-200 hover:border-pink-300"
+                    }`}
+                  >
+                    <Image
+                      src={img}
+                      alt={`${product.name} ${index + 1}`}
+                      fill
+                      className="object-contain p-1"
+                      sizes="80px"
+                    />
+                  </button>
+                ))}
+              </div>
             )}
           </div>
 

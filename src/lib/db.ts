@@ -270,6 +270,7 @@ export interface ProductData {
   price: number;
   originalPrice?: number;
   image: string;
+  images?: string[];
   category: string;
   stock: number;
   rating: number;
@@ -293,6 +294,7 @@ export async function getAllProducts(): Promise<ProductData[]> {
     price: Number(row.price),
     originalPrice: row.original_price ? Number(row.original_price) : undefined,
     image: row.image,
+    images: row.images || [],
     category: row.category,
     stock: row.stock,
     rating: Number(row.rating),
@@ -310,6 +312,7 @@ export async function saveProduct(product: ProductData): Promise<boolean> {
     price: product.price,
     original_price: product.originalPrice || null,
     image: product.image,
+    images: product.images || [],
     category: product.category,
     stock: product.stock,
     rating: product.rating,
