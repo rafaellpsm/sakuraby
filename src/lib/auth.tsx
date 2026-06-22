@@ -6,6 +6,7 @@ interface User {
   id: string;
   name: string;
   email: string;
+  isAdmin: boolean;
 }
 
 interface AuthContextType {
@@ -28,7 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
         if (payload.exp * 1000 > Date.now()) {
-          setUser({ id: payload.id, name: payload.name, email: payload.email });
+          setUser({ id: payload.id, name: payload.name, email: payload.email, isAdmin: payload.isAdmin || false });
         } else {
           localStorage.removeItem("sakuraby-token");
         }

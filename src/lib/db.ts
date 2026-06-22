@@ -51,18 +51,18 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return bcryptjs.compare(password, hash);
 }
 
-export async function createToken(user: { id: string; name: string; email: string }): Promise<string> {
-  return new SignJWT({ id: user.id, name: user.name, email: user.email })
+export async function createToken(user: { id: string; name: string; email: string; isAdmin?: boolean }): Promise<string> {
+  return new SignJWT({ id: user.id, name: user.name, email: user.email, isAdmin: user.isAdmin || false })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("7d")
     .sign(JWT_SECRET);
 }
 
-export async function verifyToken(token: string): Promise<{ id: string; name: string; email: string } | null> {
+export async function verifyToken(token: string): Promise<{ id: string; name: string; email: string; isAdmin: boolean } | null> {
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
-    return { id: payload.id as string, name: payload.name as string, email: payload.email as string };
+    return { id: payload.id as string, name: payload.name as string, email: payload.email as string, isAdmin: payload.isAdmin as boolean };
   } catch {
     return null;
   }
@@ -88,8 +88,8 @@ export async function registerUser(name: string, email: string, password: string
     return { success: false, error: `Erro ao criar conta: ${error.message}` };
   }
 
-  const token = await createToken(user);
-  return { success: true, token, user: { id: user.id, name: user.name, email: user.email } };
+  const token = await createToken({ id: user.id, name: user.name, email: user.email, isAdmin: false });
+  return { success: true, token, user: { id: user.id, name: user.name, email: user.email, isAdmin: false } };
 }
 
 export async function loginUser(email: string, password: string) {
@@ -108,8 +108,9 @@ export async function loginUser(email: string, password: string) {
     return { success: false, error: "E-mail ou senha inválidos" };
   }
 
-  const token = await createToken(user);
-  return { success: true, token, user: { id: user.id, name: user.name, email: user.email } };
+  const isAdmin = user.is_admin === true;
+  const token = await createToken({ id: user.id, name: user.name, email: user.email, isAdmin });
+  return { success: true, token, user: { id: user.id, name: user.name, email: user.email, isAdmin } };
 }
 
 export async function saveOrder(order: Order) {
@@ -190,4 +191,74 @@ export async function getOrderById(orderId: string): Promise<Order | undefined> 
     paymentId: data.payment_id,
     createdAt: data.created_at,
   };
+}
+
+export async function getAllOrders(): Promise<Order[]> {
+  const { data } = await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (!data) return [];
+
+  return data.map((row) => ({
+    id: row.id,
+    userId: row.user_id,
+    customerName: row.customer_name,
+    customerEmail: row.customer_email,
+    customerPhone: row.customer_phone,
+    customerCPF: row.customer_cpf,
+    shippingAddress: row.shipping_address,
+    items: row.items,
+    shippingOption: row.shipping_option,
+    subtotal: row.subtotal,
+    shippingCost: row.shipping_cost,
+    total: row.total,
+    status: row.status,
+    paymentId: row.payment_id,
+    createdAt: row.created_at,
+  }));
+}
+
+export async function updateOrderStatus(orderId: string, status: Order["status"]): Promise<boolean> {
+  const { error } = await supabase
+    .from("orders")
+    .update({ status })
+    .eq("id", orderId);
+  return !error;
+}
+
+export async function getOrderStats() {
+  const { data: orders } = await supabase
+    .from("orders")
+    .select("total, status, created_at");
+
+  const { count: totalUsers } = await supabase
+    .from("users")
+    .select("*", { count: "exact", head: true });
+
+  if (!orders) {
+    return { totalOrders: 0, totalRevenue: 0, pendingOrders: 0, approvedOrders: 0, totalUsers: totalUsers || 0, recentRevenue: 0 };
+  }
+
+  const totalOrders = orders.length;
+  const totalRevenue = orders.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+  const pendingOrders = orders.filter(o => o.status === "pending").length;
+  const approvedOrders = orders.filter(o => o.status === "approved" || o.status === "shipped" || o.status === "delivered").length;
+
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  const recentRevenue = orders
+    .filter(o => new Date(o.created_at) >= thirtyDaysAgo && (o.status === "approved" || o.status === "shipped" || o.status === "delivered"))
+    .reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+
+  return { totalOrders, totalRevenue, pendingOrders, approvedOrders, totalUsers: totalUsers || 0, recentRevenue };
+}
+
+export async function getAllUsers() {
+  const { data } = await supabase
+    .from("users")
+    .select("id, name, email, is_admin, created_at")
+    .order("created_at", { ascending: false });
+  return data || [];
 }
