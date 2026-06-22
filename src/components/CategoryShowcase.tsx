@@ -133,8 +133,8 @@ export default function CategoryShowcase() {
               onClick={() => setActiveCategory(cat.id)}
               className={`flex-shrink-0 px-5 py-3 rounded-2xl text-sm font-medium transition-all duration-400 overflow-hidden min-h-[44px] ${
                 activeCategory === cat.id
-                  ? `${cat.bgActive} text-white shadow-lg scale-105`
-                  : "bg-white text-gray-500 border border-pink-100 hover:border-pink-200 hover:text-gray-800 hover:shadow-md hover:scale-105"
+                  ? `${cat.bgActive} text-white shadow-lg`
+                  : "bg-white text-gray-500 border border-pink-100 hover:border-pink-200 hover:text-gray-800 hover:shadow-md"
               }`}
             >
               <span className="relative z-10 flex items-center gap-2">

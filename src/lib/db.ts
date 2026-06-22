@@ -320,6 +320,9 @@ export async function saveProduct(product: ProductData): Promise<boolean> {
     featured: product.featured,
     tags: product.tags,
   });
+  if (error) {
+    console.error("Error saving product:", error);
+  }
   return !error;
 }
 

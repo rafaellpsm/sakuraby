@@ -51,9 +51,10 @@ export async function POST(request: Request) {
     if (success) {
       return NextResponse.json({ success: true, product });
     }
-    return NextResponse.json({ error: "Erro ao salvar produto" }, { status: 500 });
-  } catch {
-    return NextResponse.json({ error: "Erro ao processar" }, { status: 500 });
+    return NextResponse.json({ error: "Erro ao salvar produto no banco de dados" }, { status: 500 });
+  } catch (error) {
+    console.error("Error saving product:", error);
+    return NextResponse.json({ error: "Erro ao processar: " + (error instanceof Error ? error.message : "desconhecido") }, { status: 500 });
   }
 }
 

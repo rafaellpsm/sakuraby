@@ -33,7 +33,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         style={{
           background: isDark ? "#111111" : "#ffffff",
           borderRight: `1px solid ${isDark ? "#262626" : "#e5e7eb"}`,
-          transform: sidebarOpen ? "translateX(0)" : undefined,
+          transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
         }}
       >
         <div
