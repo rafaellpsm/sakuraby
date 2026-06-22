@@ -272,6 +272,13 @@ body {
 .dark .from-pink-100\/40 { --tw-gradient-from: rgba(60, 20, 40, 0.4) !important; }
 .dark .via-rose-50\/30 { --tw-gradient-via: rgba(26, 16, 24, 0.3) !important; }
 
+/* More page fixes */
+.dark .bg-gradient-to-b.from-pink-100\/40.via-rose-50\/30.to-transparent { 
+  background: linear-gradient(to bottom, rgba(60, 20, 40, 0.3), rgba(26, 16, 24, 0.2), transparent) !important; 
+}
+.dark .shadow-pink-100\/30 { box-shadow: 0 4px 15px rgba(236, 72, 153, 0.08) !important; }
+.dark .shadow-pink-200\/50 { box-shadow: 0 4px 20px rgba(236, 72, 153, 0.1) !important; }
+
 /* ===== ANIMATIONS ===== */
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
