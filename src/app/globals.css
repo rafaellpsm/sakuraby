@@ -149,6 +149,21 @@ body {
   }
 }
 
+@keyframes petal-drift {
+  0%, 100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(calc(var(--drift, 20px) * -1)) translateX(8px) rotate(10deg);
+  }
+  50% {
+    transform: translateY(var(--drift, 20px)) translateX(-5px) rotate(-5deg);
+  }
+  75% {
+    transform: translateY(calc(var(--drift, 20px) * -0.5)) translateX(3px) rotate(8deg);
+  }
+}
+
 @keyframes reveal-up {
   from {
     opacity: 0;
@@ -257,6 +272,10 @@ body {
 
 .animate-petal-sway {
   animation: petal-sway ease-in-out infinite;
+}
+
+.animate-petal-drift {
+  animation: petal-drift ease-in-out infinite;
 }
 
 .animate-reveal-up {
@@ -381,6 +400,7 @@ input:focus, select:focus, textarea:focus {
 @media (prefers-reduced-motion: reduce) {
   .animate-petal-fall,
   .animate-petal-sway,
+  .animate-petal-drift,
   .animate-float,
   .animate-float-reverse,
   .animate-shimmer,

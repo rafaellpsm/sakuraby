@@ -27,11 +27,11 @@ function createPetal(id: number): Petal {
   return {
     id,
     left: seed % 100,
-    size: (seed % 4) * 12 + 24,
+    size: (seed % 5) * 10 + 22,
     duration: (seed % 6) * 3 + 10,
-    delay: (seed % 8) * 0.8,
-    swayAmount: (seed % 5) * 12 + 25,
-    opacity: (seed % 5) * 0.06 + 0.18,
+    delay: (seed % 10) * 0.7,
+    swayAmount: (seed % 5) * 15 + 20,
+    opacity: (seed % 5) * 0.06 + 0.2,
     imageIndex: id % 4,
     rotation: seed % 360,
   };
@@ -39,7 +39,7 @@ function createPetal(id: number): Petal {
 
 export default function FloatingPetals() {
   const petals = useMemo(() => {
-    return Array.from({ length: 18 }, (_, i) => createPetal(i));
+    return Array.from({ length: 30 }, (_, i) => createPetal(i));
   }, []);
 
   return (

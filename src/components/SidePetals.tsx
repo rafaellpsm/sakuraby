@@ -13,6 +13,7 @@ interface SidePetal {
   opacity: number;
   rotation: number;
   imageIndex: number;
+  drift: number;
 }
 
 const petalImages = [
@@ -28,19 +29,20 @@ function createSidePetal(id: number): SidePetal {
   return {
     id,
     side,
-    top: (seed % 80) + 10,
-    size: (seed % 3) * 20 + 50,
-    duration: (seed % 4) * 2 + 5,
-    delay: (seed % 6) * 1.5,
-    opacity: (seed % 4) * 0.04 + 0.08,
+    top: (seed % 85) + 5,
+    size: (seed % 4) * 18 + 45,
+    duration: (seed % 5) * 2 + 4,
+    delay: (seed % 7) * 1.2,
+    opacity: (seed % 5) * 0.03 + 0.1,
     rotation: seed % 360,
     imageIndex: id % 4,
+    drift: (seed % 3) * 15 + 20,
   };
 }
 
 export default function SidePetals() {
   const petals = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => createSidePetal(i));
+    return Array.from({ length: 20 }, (_, i) => createSidePetal(i));
   }, []);
 
   return (
@@ -48,14 +50,15 @@ export default function SidePetals() {
       {petals.map((petal) => (
         <div
           key={petal.id}
-          className={`absolute ${petal.side === "left" ? "animate-float" : "animate-float-reverse"}`}
+          className="absolute animate-petal-drift"
           style={{
-            [petal.side]: petal.side === "left" ? "-20px" : "-20px",
+            [petal.side]: petal.side === "left" ? `-${petal.size / 2}px` : `-${petal.size / 2}px`,
             top: `${petal.top}%`,
             opacity: petal.opacity,
             animationDuration: `${petal.duration}s`,
             animationDelay: `${petal.delay}s`,
-          }}
+            "--drift": `${petal.drift}px`,
+          } as React.CSSProperties}
         >
           <Image
             src={petalImages[petal.imageIndex]}
