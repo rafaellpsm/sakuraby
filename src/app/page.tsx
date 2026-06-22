@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getFeaturedProducts } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 import CategoryShowcase from "@/components/CategoryShowcase";
+import FloatingPetals from "@/components/FloatingPetals";
 import { ScrollRevealWrapper, StaggerRevealWrapper } from "@/components/ScrollReveal";
 
 const perks = [
@@ -18,6 +19,7 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       <section className="relative pt-20 pb-16 md:pt-28 md:pb-24 overflow-hidden">
+        <FloatingPetals />
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-gradient-to-b from-pink-100/40 via-rose-50/30 to-transparent rounded-full blur-3xl" />
           <div className="absolute top-10 left-[10%] text-5xl opacity-10 animate-float select-none">🌸</div>

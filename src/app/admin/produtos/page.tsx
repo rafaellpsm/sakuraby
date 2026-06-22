@@ -52,6 +52,48 @@ export default function AdminProdutos() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [seeding, setSeeding] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, isAdditional = false) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setMessage("");
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "produtos");
+
+    const token = localStorage.getItem("sakuraby-token");
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (isAdditional) {
+          setForm({ ...form, images: [...(form.images || []), data.url] });
+        } else {
+          setForm({ ...form, image: data.url });
+        }
+      } else {
+        setMessage(data.error || "Erro ao fazer upload");
+      }
+    } catch {
+      setMessage("Erro ao fazer upload");
+    }
+    setUploading(false);
+    e.target.value = "";
+  };
+
+  const removeAdditionalImage = (index: number) => {
+    const newImages = (form.images || []).filter((_, i) => i !== index);
+    setForm({ ...form, images: newImages });
+  };
 
   const fetchProducts = useCallback(async () => {
     const token = localStorage.getItem("sakuraby-token");
@@ -291,25 +333,49 @@ export default function AdminProdutos() {
 
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Imagem Principal</label>
-                <input
-                  type="text"
-                  value={form.image}
-                  onChange={(e) => setForm({ ...form, image: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400 min-h-[44px]"
-                  placeholder="/images/produtos/arquivo.webp"
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={form.image}
+                    onChange={(e) => setForm({ ...form, image: e.target.value })}
+                    className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400 min-h-[44px]"
+                    placeholder="URL ou faça upload"
+                  />
+                  <label className="px-4 py-2.5 bg-gray-100 text-gray-600 text-sm font-medium rounded-xl hover:bg-gray-200 transition-all cursor-pointer min-h-[44px] flex items-center gap-2 whitespace-nowrap">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    {uploading ? "Enviando..." : "Upload"}
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleFileUpload(e, false)} disabled={uploading} />
+                  </label>
+                </div>
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-medium text-gray-500 mb-1">Imagens Adicionais (uma URL por linha)</label>
-                <textarea
-                  value={(form.images || []).join("\n")}
-                  onChange={(e) => setForm({ ...form, images: e.target.value.split("\n").filter(u => u.trim()) })}
-                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400 min-h-[80px] resize-none font-mono text-xs"
-                  placeholder="/images/produtos/foto2.webp&#10;/images/produtos/foto3.webp"
-                  rows={3}
-                />
-                <p className="text-[10px] text-gray-400 mt-1">Adicione URLs adicionais para criar uma galeria no produto</p>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Imagens Adicionais</label>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {(form.images || []).map((img, i) => (
+                    <div key={i} className="relative group">
+                      <div className="w-16 h-16 bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
+                        <Image src={img} alt={`Extra ${i + 1}`} width={64} height={64} className="w-full h-full object-contain" unoptimized />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeAdditionalImage(i)}
+                        className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  <label className="w-16 h-16 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-pink-400 hover:bg-pink-50 transition-all">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleFileUpload(e, true)} disabled={uploading} />
+                  </label>
+                </div>
+                <p className="text-[10px] text-gray-400">Clique + para adicionar mais fotos ao produto</p>
               </div>
 
               <div>

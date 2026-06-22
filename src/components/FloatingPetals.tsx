@@ -20,11 +20,11 @@ function createPetal(id: number): Petal {
   return {
     id,
     left: seed % 100,
-    size: (seed % 3) * 15 + 30,
-    duration: (seed % 4) * 5 + 15,
-    delay: (seed % 6) * 2,
-    swayAmount: (seed % 3) * 25 + 30,
-    opacity: (seed % 3) * 0.05 + 0.15,
+    size: (seed % 3) * 12 + 28,
+    duration: (seed % 4) * 4 + 12,
+    delay: (seed % 6) * 1.5,
+    swayAmount: (seed % 3) * 20 + 25,
+    opacity: (seed % 4) * 0.08 + 0.2,
     rotation: seed % 360,
     isEmoji: id % 3 === 0,
   };
@@ -32,11 +32,11 @@ function createPetal(id: number): Petal {
 
 export default function FloatingPetals() {
   const petals = useMemo(() => {
-    return Array.from({ length: 10 }, (_, i) => createPetal(i));
+    return Array.from({ length: 15 }, (_, i) => createPetal(i));
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
       {petals.map((petal) => (
         <div
           key={petal.id}
