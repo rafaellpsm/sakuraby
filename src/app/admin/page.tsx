@@ -69,10 +69,13 @@ export default function AdminDashboard() {
             <span className="text-lg font-bold text-gray-900">Admin SakuraBy</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/admin/pedidos" className="text-sm text-gray-600 hover:text-pink-600 font-medium">
+            <Link href="/admin/pedidos" className="text-sm text-gray-600 hover:text-gray-900 font-medium">
               Pedidos
             </Link>
-            <Link href="/" className="text-sm text-gray-600 hover:text-pink-600 font-medium">
+            <Link href="/admin/produtos" className="text-sm text-gray-600 hover:text-gray-900 font-medium">
+              Produtos
+            </Link>
+            <Link href="/" className="text-sm text-gray-600 hover:text-gray-900 font-medium">
               Ver Loja
             </Link>
             <span className="text-sm text-gray-400">{user.name}</span>
@@ -97,14 +100,23 @@ export default function AdminDashboard() {
           ))}
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 flex flex-wrap gap-3">
           <Link
             href="/admin/pedidos"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold rounded-xl hover:from-pink-600 hover:to-rose-600 transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white text-sm font-medium rounded-full hover:bg-gray-800 transition-all"
           >
             Gerenciar Pedidos
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
+          <Link
+            href="/admin/produtos"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-gray-900 text-sm font-medium rounded-full hover:bg-gray-50 transition-all"
+          >
+            Gerenciar Produtos
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </Link>
         </div>

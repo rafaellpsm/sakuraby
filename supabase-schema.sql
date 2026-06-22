@@ -46,7 +46,30 @@ CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);
 -- Habilitar RLS (Row Level Security) - opcional mas recomendado
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 
 -- Políticas de acesso (service role tem acesso total)
 CREATE POLICY "Service role can do everything" ON users FOR ALL USING (true);
 CREATE POLICY "Service role can do everything" ON orders FOR ALL USING (true);
+CREATE POLICY "Service role can do everything" ON products FOR ALL USING (true);
+
+-- Tabela de produtos
+CREATE TABLE IF NOT EXISTS products (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL DEFAULT '',
+  price NUMERIC(10,2) NOT NULL,
+  original_price NUMERIC(10,2),
+  image TEXT NOT NULL DEFAULT '',
+  category TEXT NOT NULL,
+  stock INTEGER NOT NULL DEFAULT 0,
+  rating NUMERIC(2,1) DEFAULT 0,
+  reviews INTEGER DEFAULT 0,
+  featured BOOLEAN DEFAULT false,
+  tags TEXT[] DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Índice para busca por categoria
+CREATE INDEX IF NOT EXISTS idx_products_category ON products(category);
+CREATE INDEX IF NOT EXISTS idx_products_featured ON products(featured);

@@ -262,3 +262,65 @@ export async function getAllUsers() {
     .order("created_at", { ascending: false });
   return data || [];
 }
+
+export interface ProductData {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  originalPrice?: number;
+  image: string;
+  category: string;
+  stock: number;
+  rating: number;
+  reviews: number;
+  featured: boolean;
+  tags: string[];
+}
+
+export async function getAllProducts(): Promise<ProductData[]> {
+  const { data } = await supabase
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (!data) return [];
+
+  return data.map((row) => ({
+    id: row.id,
+    name: row.name,
+    description: row.description,
+    price: Number(row.price),
+    originalPrice: row.original_price ? Number(row.original_price) : undefined,
+    image: row.image,
+    category: row.category,
+    stock: row.stock,
+    rating: Number(row.rating),
+    reviews: row.reviews,
+    featured: row.featured,
+    tags: row.tags || [],
+  }));
+}
+
+export async function saveProduct(product: ProductData): Promise<boolean> {
+  const { error } = await supabase.from("products").upsert({
+    id: product.id,
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    original_price: product.originalPrice || null,
+    image: product.image,
+    category: product.category,
+    stock: product.stock,
+    rating: product.rating,
+    reviews: product.reviews,
+    featured: product.featured,
+    tags: product.tags,
+  });
+  return !error;
+}
+
+export async function deleteProduct(productId: string): Promise<boolean> {
+  const { error } = await supabase.from("products").delete().eq("id", productId);
+  return !error;
+}
