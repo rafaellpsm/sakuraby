@@ -49,6 +49,7 @@ export default function AdminProdutos() {
   const [tagInput, setTagInput] = useState("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [seeding, setSeeding] = useState(false);
 
   const fetchProducts = useCallback(async () => {
     const token = localStorage.getItem("sakuraby-token");
@@ -70,6 +71,27 @@ export default function AdminProdutos() {
     }
     fetchProducts();
   }, [user, authLoading, router, fetchProducts]);
+
+  const handleSeed = async () => {
+    if (!confirm("Isso vai cadastrar todos os produtos existentes no banco de dados. Continuar?")) return;
+
+    setSeeding(true);
+    setMessage("");
+    const token = localStorage.getItem("sakuraby-token");
+    const res = await fetch("/api/admin/products/seed", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      setMessage(data.message);
+      fetchProducts();
+    } else {
+      setMessage("Erro ao cadastrar produtos");
+    }
+    setSeeding(false);
+  };
 
   const handleSave = async () => {
     if (!form.name || !form.price || !form.category) {
@@ -167,19 +189,30 @@ export default function AdminProdutos() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Produtos</h1>
-          <button
-            onClick={() => {
-              setEditingProduct(null);
-              setForm(emptyProduct);
-              setShowForm(true);
-              setMessage("");
-            }}
-            className="px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-full hover:bg-gray-800 transition-all min-h-[44px]"
-          >
-            + Novo Produto
-          </button>
+          <div className="flex gap-2">
+            {products.length === 0 && (
+              <button
+                onClick={handleSeed}
+                disabled={seeding}
+                className="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded-full hover:bg-gray-50 transition-all min-h-[44px] disabled:opacity-50"
+              >
+                {seeding ? "Cadastrando..." : "Cadastrar produtos existentes"}
+              </button>
+            )}
+            <button
+              onClick={() => {
+                setEditingProduct(null);
+                setForm(emptyProduct);
+                setShowForm(true);
+                setMessage("");
+              }}
+              className="px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-full hover:bg-gray-800 transition-all min-h-[44px]"
+            >
+              + Novo Produto
+            </button>
+          </div>
         </div>
 
         {message && (

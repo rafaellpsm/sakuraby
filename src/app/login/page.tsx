@@ -20,7 +20,7 @@ export default function LoginPage() {
 
     const result = await login(email, password);
     if (result.success) {
-      router.push("/meus-pedidos");
+      router.push("/");
     } else {
       setError(result.error || "Erro ao fazer login");
     }

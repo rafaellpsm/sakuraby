@@ -32,7 +32,7 @@ export default function CadastroPage() {
     setLoading(true);
     const result = await register(name, email, password);
     if (result.success) {
-      router.push("/meus-pedidos");
+      router.push("/");
     } else {
       setError(result.error || "Erro ao criar conta");
     }
