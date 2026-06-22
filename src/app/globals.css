@@ -47,6 +47,9 @@ body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-quicksand), Arial, Helvetica, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  overscroll-behavior-y: contain;
 }
 
 @keyframes float {
@@ -99,6 +102,14 @@ body {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 .glass-card {

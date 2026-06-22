@@ -79,12 +79,12 @@ export default function ProductCard({ product }: { product: Product }) {
             <button
               onClick={handleAdd}
               disabled={product.stock === 0}
-              className={`w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 min-w-[36px] min-h-[36px] ${
                 added
                   ? "bg-green-500 text-white scale-110"
                   : product.stock === 0
                   ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                  : "bg-gray-900 text-white hover:bg-gray-800 hover:scale-110 active:scale-90"
+                  : "bg-gray-900 text-white hover:bg-gray-800 active:scale-90"
               }`}
             >
               {added ? (

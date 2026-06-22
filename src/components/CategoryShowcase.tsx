@@ -77,12 +77,12 @@ function MiniProductCard({ product }: { product: Product }) {
           <button
             onClick={handleAdd}
             disabled={product.stock === 0}
-            className={`w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${
+            className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 min-w-[36px] min-h-[36px] ${
               added
                 ? "bg-green-500 text-white scale-110"
                 : product.stock === 0
                 ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                : "bg-gray-900 text-white hover:bg-gray-800 hover:scale-110 active:scale-90"
+                : "bg-gray-900 text-white hover:bg-gray-800 active:scale-90"
             }`}
           >
             {added ? (
@@ -115,24 +115,24 @@ export default function CategoryShowcase() {
             Explore por categoria
           </h2>
           <p className="text-sm text-gray-400">
-            Passe o mouse e descubra nossos produtos
+            <span className="hidden sm:inline">Passe o mouse e </span>Descubra nossos produtos
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
+        <div className="flex overflow-x-auto gap-2 mb-10 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center scrollbar-hide">
           {categoryData.map((cat) => (
             <button
               key={cat.id}
               onMouseEnter={() => setActiveCategory(cat.id)}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-5 py-2.5 rounded-full text-xs font-medium transition-all duration-300 ${
+              className={`flex-shrink-0 px-5 py-3 rounded-full text-sm font-medium transition-all duration-300 min-h-[44px] ${
                 activeCategory === cat.id
                   ? "bg-gray-900 text-white shadow-lg"
                   : "bg-white text-gray-500 border border-gray-200 hover:border-gray-300 hover:text-gray-900"
               }`}
             >
-              <span className="flex items-center gap-1.5">
-                <span>{cat.icon}</span>
+              <span className="flex items-center gap-2">
+                <span className="text-base">{cat.icon}</span>
                 {cat.label}
               </span>
             </button>
@@ -183,9 +183,12 @@ export default function CategoryShowcase() {
         <div className="text-center mt-8 sm:hidden">
           <Link
             href={`/produtos?category=${activeCat.id}`}
-            className="text-sm text-gray-400 hover:text-gray-900 transition-colors"
+            className="inline-flex items-center gap-1.5 px-5 py-3 bg-gray-900 text-white text-sm font-medium rounded-full min-h-[44px]"
           >
-            Ver todos de {activeCat.label} →
+            Ver todos de {activeCat.label}
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
           </Link>
         </div>
       </div>

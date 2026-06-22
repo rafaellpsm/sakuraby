@@ -42,12 +42,12 @@ export default function Home() {
               Skincare coreano selecionado com carinho para sua rotina de beleza.
             </p>
 
-            <div className="flex items-center justify-center gap-4">
+            <div className="flex items-center justify-center gap-3 px-4">
               <Link
                 href="#destaques"
-                className="group px-8 py-4 bg-gray-900 text-white font-medium rounded-full hover:bg-gray-800 transition-all duration-300 active:scale-95 shadow-lg shadow-gray-900/10"
+                className="group flex-1 sm:flex-none px-8 py-4 bg-gray-900 text-white font-medium rounded-full hover:bg-gray-800 transition-all duration-300 active:scale-95 shadow-lg shadow-gray-900/10 min-h-[48px] text-center justify-center"
               >
-                <span className="flex items-center gap-2 text-sm">
+                <span className="flex items-center justify-center gap-2 text-sm">
                   Ver Destaques
                   <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -56,7 +56,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/produtos"
-                className="px-8 py-4 text-gray-500 font-medium rounded-full hover:text-gray-900 hover:bg-gray-50 transition-all duration-300 text-sm"
+                className="flex-1 sm:flex-none px-8 py-4 text-gray-500 font-medium rounded-full hover:text-gray-900 hover:bg-gray-50 transition-all duration-300 text-sm min-h-[48px] text-center flex items-center justify-center"
               >
                 Todos os Produtos
               </Link>
@@ -65,15 +65,15 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-6 border-y border-gray-100">
+      <section className="py-4 border-y border-gray-100">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <StaggerRevealWrapper className="grid grid-cols-3 gap-4" staggerDelay={100}>
+          <StaggerRevealWrapper className="grid grid-cols-3 gap-2 sm:gap-4" staggerDelay={100}>
             {perks.map((perk) => (
-              <div key={perk.title} className="flex items-center justify-center gap-3 py-2">
-                <span className="text-xl">{perk.icon}</span>
+              <div key={perk.title} className="flex items-center justify-center gap-2 sm:gap-3 py-2">
+                <span className="text-lg sm:text-xl">{perk.icon}</span>
                 <div>
-                  <p className="text-xs font-semibold text-gray-800">{perk.title}</p>
-                  <p className="text-[10px] text-gray-400">{perk.desc}</p>
+                  <p className="text-[11px] sm:text-xs font-semibold text-gray-800">{perk.title}</p>
+                  <p className="text-[10px] text-gray-400 hidden sm:block">{perk.desc}</p>
                 </div>
               </div>
             ))}
@@ -110,9 +110,12 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="text-center mt-10 sm:hidden">
-              <Link href="/produtos" className="text-sm text-gray-400 hover:text-gray-900 transition-colors">
-                Ver todos os produtos →
+            <div className="text-center mt-8 sm:hidden">
+              <Link href="/produtos" className="inline-flex items-center gap-1.5 px-5 py-3 bg-gray-900 text-white text-sm font-medium rounded-full min-h-[44px]">
+                Ver todos os produtos
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
             </div>
           </div>
