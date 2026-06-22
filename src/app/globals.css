@@ -146,14 +146,14 @@ body {
 .dark footer { background-color: #0f0f0f !important; border-color: #2a2a2a !important; }
 .dark header { color: #e5e7eb !important; }
 
-.dark .bg-clip-text { -webkit-text-fill-color: transparent; }
-.dark [class*="bg-gradient-to-r"][class*="bg-clip-text"] {
+.dark .bg-clip-text,
+.dark [class*="bg-clip-text"] {
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
 }
 
-.dark a { color: inherit; }
 .dark .text-pink-500 { color: #f472b6 !important; }
 .dark .text-pink-600 { color: #ec4899 !important; }
 .dark .text-rose-500 { color: #fb7185 !important; }
