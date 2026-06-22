@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getOrderById, saveOrder } from "@/lib/db";
+import { getOrderById, saveOrder, type Order } from "@/lib/db";
 
 export async function POST(request: Request) {
   try {
@@ -20,18 +20,32 @@ export async function POST(request: Request) {
         const payment = await response.json();
 
         if (payment.external_reference) {
-          const order = getOrderById(payment.external_reference);
-          if (order) {
-            let status: "approved" | "pending" | "shipped" | "delivered" | "cancelled" = "pending";
+          const existingOrder: Order | undefined = await getOrderById(payment.external_reference);
+          if (existingOrder) {
+            let newStatus: Order["status"] = "pending";
 
-            if (payment.status === "approved") status = "approved";
-            else if (payment.status === "cancelled" || payment.status === "rejected") status = "cancelled";
+            if (payment.status === "approved") newStatus = "approved";
+            else if (payment.status === "cancelled" || payment.status === "rejected") newStatus = "cancelled";
 
-            saveOrder({
-              ...order,
-              status,
+            const updatedOrder: Order = {
+              id: existingOrder.id,
+              userId: existingOrder.userId,
+              customerName: existingOrder.customerName,
+              customerEmail: existingOrder.customerEmail,
+              customerPhone: existingOrder.customerPhone,
+              customerCPF: existingOrder.customerCPF,
+              shippingAddress: existingOrder.shippingAddress,
+              items: existingOrder.items,
+              shippingOption: existingOrder.shippingOption,
+              subtotal: existingOrder.subtotal,
+              shippingCost: existingOrder.shippingCost,
+              total: existingOrder.total,
+              status: newStatus,
               paymentId: paymentId.toString(),
-            });
+              createdAt: existingOrder.createdAt,
+            };
+
+            await saveOrder(updatedOrder);
           }
         }
       }
