@@ -116,6 +116,9 @@ export default function Header() {
               <>
                 <Link href="/perfil" className="mobile-link" onClick={() => setMenuOpen(false)}>Meu Perfil</Link>
                 <Link href="/meus-pedidos" className="mobile-link" onClick={() => setMenuOpen(false)}>Meus Pedidos</Link>
+                {user.isAdmin && (
+                  <Link href="/admin" className="mobile-link text-pink-500 font-medium" onClick={() => setMenuOpen(false)}>Admin Panel</Link>
+                )}
                 <button onClick={() => { logout(); setMenuOpen(false); }} className="mobile-link text-left w-full">Sair</button>
               </>
             ) : (
