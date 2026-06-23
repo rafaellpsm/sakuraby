@@ -3,18 +3,34 @@
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { getProductById, products } from "@/lib/products";
+import { useState, useEffect } from "react";
+import { getProductById, products, type Product } from "@/lib/products";
 import { useCart } from "@/lib/cart";
 import ProductCard from "@/components/ProductCard";
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const product = getProductById(params.id as string);
+  const hardcodedProduct = getProductById(params.id as string);
+  const [product, setProduct] = useState<Product | undefined>(hardcodedProduct);
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const res = await fetch(`/api/products/${params.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setProduct(data);
+        }
+      } catch {
+        // keep hardcoded product
+      }
+    }
+    fetchProduct();
+  }, [params.id]);
 
   if (!product) {
     return (

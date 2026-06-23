@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
+import { useState, useMemo, Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { products, categories } from "@/lib/products";
+import { products as hardcodedProducts, categories, type Product } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 
 function ProdutosContent() {
@@ -11,11 +11,34 @@ function ProdutosContent() {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("featured");
+  const [allProducts, setAllProducts] = useState<Product[]>(hardcodedProducts);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch("/api/products");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.products && data.products.length > 0) {
+            const dbIds = new Set(data.products.map((p: Product) => p.id));
+            const merged = [
+              ...data.products,
+              ...hardcodedProducts.filter((p) => !dbIds.has(p.id)),
+            ];
+            setAllProducts(merged);
+          }
+        }
+      } catch {
+        // keep hardcoded products
+      }
+    }
+    fetchProducts();
+  }, []);
 
   const filteredProducts = useMemo(() => {
     let result = selectedCategory === "Todos"
-      ? products
-      : products.filter(p => p.category === selectedCategory);
+      ? allProducts
+      : allProducts.filter(p => p.category === selectedCategory);
 
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
